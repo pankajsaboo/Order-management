@@ -6,6 +6,6 @@ import design.boilerplate.springboot.model.Menu;
 
 public interface MenuRepository extends CrudRepository<Menu, Long> {
 	
-	Menu findByParentId_id(Long id);
+	Menu findByParentMenuId_id(Long id);
 
 }

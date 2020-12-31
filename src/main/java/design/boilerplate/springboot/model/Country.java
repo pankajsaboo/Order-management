@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.UniqueConstraint;
+
+import org.hibernate.validator.constraints.UniqueElements;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,7 +26,7 @@ public class Country {
 	@SequenceGenerator(name = "COUNTRY_SEQ", sequenceName = "country_seq")
 	Long id;
 	
-	@Column(name = "country_name")
+	@Column(name = "country_name", unique = true)
 	String countryName;
 	
 	@Column(name = "country_code")

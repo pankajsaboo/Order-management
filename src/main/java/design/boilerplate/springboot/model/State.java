@@ -1,5 +1,6 @@
 package design.boilerplate.springboot.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,7 +25,7 @@ public class State {
 	@SequenceGenerator(name = "STATE_SEQ", sequenceName = "state_seq")
 	Long id;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "country_id")
 	Country countryId;
 	
