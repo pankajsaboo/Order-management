@@ -8,12 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @Entity(name = "roles")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
+@NoArgsConstructor
 public class Roles {
 	
 	@Id

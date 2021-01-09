@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +23,7 @@ public class AddressType {
 	@SequenceGenerator(name = "ADDRESS_TYPE_SEQ", sequenceName = "address_type_seq")
 	Long id;
 	
-	@Column(name = "address_type_name")
+	@Column(name = "address_type_name", unique = true)
 	String addressTypeName;
 	
 	@Column(name = "status")

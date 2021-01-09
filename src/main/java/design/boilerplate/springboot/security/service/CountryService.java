@@ -1,16 +1,26 @@
 package design.boilerplate.springboot.security.service;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
 import design.boilerplate.springboot.model.Country;
-import design.boilerplate.springboot.repository.CountryRepository;
 import design.boilerplate.springboot.security.dto.CountryDto;
 
-@Service
 public interface CountryService {
 	
-	public CountryDto getCountryById(Long id);
+	CountryDto createCountry(CountryDto countryDto);
+
+	CountryDto getCountryById(Long id);
+	
+	CountryDto getCountryByCountryName(String countryName);
+	
+	Country getCountryByName(String countryName);
+	
+	CountryDto getCountryByCountryCode(String countryCode);
+	
+	List<CountryDto> getCountryByStatus(String status);
+	
+	CountryDto updateCountry(CountryDto countryDto);
+	
+	boolean deleteCountry(CountryDto countryDto);
 
 }

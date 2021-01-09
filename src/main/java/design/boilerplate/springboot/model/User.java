@@ -1,6 +1,7 @@
 package design.boilerplate.springboot.model;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 
@@ -9,29 +10,39 @@ import javax.persistence.*;
  *
  * @author Faruk
  */
-@Getter
-@Setter
+@Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "USERS")
+@Table(name = "users")
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_seq")
+	@SequenceGenerator(name = "USER_SEQ", sequenceName = "user_seq")
+	Long id;
 
-	private String name;
+	String name;
 
 	@Column(unique = true)
-	private String username;
+	String username;
 
-	private String password;
+	String password;
+	
+	@ManyToOne
+	@JoinColumn(name = "company_id")
+	Company companyId;
+	
+	@OneToOne
+	@JoinColumn(name = "user_type_id")
+	UserType userTypeId;
+	
+	@OneToOne
+	@JoinColumn(name = "roles_id")
+	Roles userRole;
 
-	private String email;
-
-	@Enumerated(EnumType.STRING)
-	private UserRole userRole;
+	
 
 }

@@ -21,11 +21,11 @@ import lombok.experimental.FieldDefaults;
 public class State {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "state_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "state_seq")
 	@SequenceGenerator(name = "STATE_SEQ", sequenceName = "state_seq")
 	Long id;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "country_id")
 	Country countryId;
 	

@@ -1,6 +1,7 @@
 package design.boilerplate.springboot.service;
 
 import design.boilerplate.springboot.exceptions.RegistrationException;
+import design.boilerplate.springboot.repository.EmailsRepository;
 import design.boilerplate.springboot.repository.UserRepository;
 import design.boilerplate.springboot.security.dto.RegistrationRequest;
 import design.boilerplate.springboot.utils.ExceptionMessageAccessor;
@@ -24,6 +25,8 @@ public class UserValidationService {
 
 	private final UserRepository userRepository;
 
+	private final EmailsRepository emailsRepository;
+	
 	private final ExceptionMessageAccessor exceptionMessageAccessor;
 
 	public void validateUser(RegistrationRequest registrationRequest) {
@@ -51,11 +54,11 @@ public class UserValidationService {
 
 	private void checkEmail(String email) {
 
-		final boolean existsByEmail = userRepository.existsByEmail(email);
+		final boolean existsByEmail = emailsRepository.existsByEmailId(email);
 
 		if (existsByEmail) {
 
-			log.warn("{} is already being used!", email);
+			log.warn("{} is already registered!", email);
 
 			final String existsEmail = exceptionMessageAccessor.getMessage(null, EMAIL_ALREADY_EXISTS);
 			throw new RegistrationException(existsEmail);

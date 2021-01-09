@@ -1,5 +1,6 @@
 package design.boilerplate.springboot.security.service;
 
+import design.boilerplate.springboot.model.Company;
 import design.boilerplate.springboot.model.User;
 import design.boilerplate.springboot.security.dto.AuthenticatedUserDto;
 import design.boilerplate.springboot.security.dto.RegistrationRequest;
@@ -17,5 +18,7 @@ public interface UserService {
 	RegistrationResponse registration(RegistrationRequest registrationRequest);
 
 	AuthenticatedUserDto findAuthenticatedUserByUsername(String username);
+	
+	Company registerCompany(RegistrationRequest registrationRequest);
 
 }

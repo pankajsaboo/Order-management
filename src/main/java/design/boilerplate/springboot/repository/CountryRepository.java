@@ -6,6 +6,10 @@ import design.boilerplate.springboot.model.Country;
 
 public interface CountryRepository extends CrudRepository<Country, Long> {
 	
-	Country findByCountryName(String countryName);
+	public Country findByCountryCode(String countryCode);
+
+	public Country findByCountryName(String countryName);
+
+	public boolean existsByCountryName(String countryName);
 	
 }

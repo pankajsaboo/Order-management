@@ -1,10 +1,15 @@
 package design.boilerplate.springboot.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.UniqueConstraint;
 
@@ -31,6 +36,9 @@ public class Country {
 	
 	@Column(name = "country_code")
 	String countryCode;
+	
+	@OneToMany(mappedBy = "countryId", fetch = FetchType.LAZY)
+	Set<State> states = new HashSet<State>();
 	
 	@Column(name = "status")
 	String status;

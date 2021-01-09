@@ -1,5 +1,7 @@
 package design.boilerplate.springboot.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,21 +14,22 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Entity(name = "api")
+@Entity(name = "orders")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class API {
+public class Order extends Base{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "api_seq")
-	@SequenceGenerator(name = "API_SEQ", sequenceName = "api_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "orders_seq")
+	@SequenceGenerator(name = "ORDERS_SEQ", sequenceName = "orders_seq")
 	Long id;
 	
-	@Column(name = "api_name")
-	String apiName;
+	@Column(name = "order_date")
+	Date orderDate;
 	
-	@Column(name = "uri")
-	String uri;
+	@Column(name = "total_value")
+	Double totalValue;
 	
-	@Column(name = "type")
-	String type;
+	@Column(name = "status")
+	String status;
+
 }

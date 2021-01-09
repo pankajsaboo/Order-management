@@ -9,23 +9,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TraderDto {
 	
-	@JsonProperty(value = "traderId")
-	Long traderId;
-	
 	@JsonProperty(value = "traderCompanyName")
 	String companyName;
 	
 	@JsonProperty(value = "traderAdminName")
-	String traderAdminName;
+	String adminName;
 	
 	@JsonProperty(value = "traderCompanyEmail")
-	String traderCompanyEmail;
+	String companyEmail;
 	
 	@JsonProperty(value = "traderCompanyPhone")
-	String traderCompanyPhone;
+	String companyPhone;
 	
 	@JsonProperty(value = "traderCompanyLogo")
-	String traderCompanyLogo;
+	String companyLogo;
 	
 	@JsonProperty(value = "traderGstNumber")
 	String gstNumber;

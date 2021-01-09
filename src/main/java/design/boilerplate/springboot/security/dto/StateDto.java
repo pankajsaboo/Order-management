@@ -13,6 +13,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class StateDto {
 	
+	@JsonProperty(value = "_id")
+	Long id;
+	
 	@JsonProperty(value = "country")
 	CountryDto country;
 	

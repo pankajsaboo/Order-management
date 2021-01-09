@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Entity(name = "company")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class Company {
+public class Company extends Base{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "company_seq")
@@ -26,5 +26,5 @@ public class Company {
 	
 	@Column(name = "company_name")
 	String companyName;
-
+	
 }

@@ -1,9 +1,10 @@
 package design.boilerplate.springboot.security.service;
 
-import design.boilerplate.springboot.model.UserRole;
 import design.boilerplate.springboot.security.dto.AuthenticatedUserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,12 +22,13 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private static final String USERNAME_OR_PASSWORD_INVALID = "Invalid username or password.";
 
-	private final UserService userService;
+	@Autowired
+	private UserService userService;
+
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
@@ -39,8 +41,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		final String authenticatedUsername = authenticatedUser.getUsername();
 		final String authenticatedPassword = authenticatedUser.getPassword();
-		final UserRole userRole = authenticatedUser.getUserRole();
-		final SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userRole.name());
+		final String userRole = authenticatedUser.getUserRole().getTitle();
+		final SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userRole);
 
 		return new User(authenticatedUsername, authenticatedPassword, Collections.singletonList(grantedAuthority));
 	}

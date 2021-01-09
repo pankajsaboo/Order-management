@@ -13,21 +13,73 @@ public class CompanyServiceImpl implements CompanyService{
 
 	@Autowired
 	CompanyRepository companyRepository;
-	
+
 	@Override
-	public CompanyDto getCompany(Long id) {
+	public CompanyDto createCompany(CompanyDto companyDto) {
 		
-		CompanyDto companyDto = new CompanyDto();
-		
-		BeanUtils.copyProperties(companyRepository.findById(id).get(), companyDto);
-		
-		return companyDto;
+		Company company = convertToCompany(companyDto);
+
+		return convertToCompanyDto(companyRepository.save(company));
 	}
 
 	@Override
-	public Long createCompany(Company company) {
+	public CompanyDto getCompany(Long id) {
+		return convertToCompanyDto(companyRepository.findById(id).get());
+	}
+
+	@Override
+	public Company getCompanyByName(String companyName) {
+		return companyRepository.findByCompanyName(companyName);
+	}
+
+	@Override
+	public CompanyDto getCompanyByCompanyName(String companyName) {
+		return convertToCompanyDto(companyRepository.findByCompanyName(companyName));
+	}
+
+	@Override
+	public CompanyDto updateCompany(CompanyDto companyDto) {
 		
-		return companyRepository.save(company).getId();
+		if (companyRepository.existsById(companyDto.getId())) {
+
+			Company company = convertToCompany(companyDto);
+
+			return convertToCompanyDto(companyRepository.save(company));
+			
+		}
+
+		return createCompany(companyDto);
+	}
+
+	@Override
+	public boolean deleteCompany(CompanyDto companyDto) {
+		
+		if (companyRepository.existsById(companyDto.getId())) {
+			
+			companyRepository.deleteById(companyDto.getId());
+			
+			return companyRepository.existsById(companyDto.getId());
+		}
+
+		return false;
+	}
+
+	private CompanyDto convertToCompanyDto(Company company) {
+
+		CompanyDto dto = new CompanyDto();
+
+		BeanUtils.copyProperties(company, dto);
+
+		return dto;
+	}
+
+	private Company convertToCompany(CompanyDto dto) {
+
+		Company company = new Company();
+
+		BeanUtils.copyProperties(dto, company);
+
+		return company;
 	}
 
 }

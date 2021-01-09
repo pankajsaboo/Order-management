@@ -1,7 +1,6 @@
 package design.boilerplate.springboot.security.jwt;
 
 import design.boilerplate.springboot.model.User;
-import design.boilerplate.springboot.model.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,10 +23,10 @@ public class JwtTokenManager {
 	public String generateToken(User user) {
 
 		final String username = user.getUsername();
-		final UserRole userRole = user.getUserRole();
+		final String userRole = user.getUserRole().getTitle();
 
 		final Claims claims = Jwts.claims().setSubject(username);
-		claims.put("role", userRole.name());
+		claims.put("role", userRole);
 
 		final long currentTimeMillis = System.currentTimeMillis();
 

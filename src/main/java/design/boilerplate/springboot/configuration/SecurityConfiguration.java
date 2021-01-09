@@ -24,15 +24,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+	
+	
+	@Autowired
+	private UserDetailsServiceImpl userDetailsServiceImpl;
 
-	private final UserDetailsServiceImpl userDetailsServiceImpl;
+	//private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-	private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-	private final JwtAuthenticationEntryPoint unauthorizedHandler;
+	//private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
 	@Bean
 	@Override
@@ -42,13 +43,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable()
-				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-				.authorizeRequests()
-				.antMatchers("/register", "/login","/v2/api-docs","/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/actuator/**").permitAll()
-				.anyRequest().authenticated().and()
-				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.cors().and().csrf().disable();
+//		.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//		.authorizeRequests()
+//		.antMatchers("/register", "/login","/v2/api-docs","/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/actuator/**").permitAll()
+//		.anyRequest().authenticated().and()
+//		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+//		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
 	@Autowired

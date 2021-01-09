@@ -12,15 +12,21 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Entity(name = "sales_person")
+@Entity(name = "api")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class SalesPerson {
-
+public class Api {
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sales_person_seq")
-	@SequenceGenerator(name = "SALES_PERSON_SEQ", sequenceName = "sales_person_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "api_seq")
+	@SequenceGenerator(name = "API_SEQ", sequenceName = "api_seq")
 	Long id;
 	
-	@Column(name = "sales_person_name")
-	String name;
+	@Column(name = "api_name")
+	String apiName;
+	
+	@Column(name = "uri")
+	String uri;
+	
+	@Column(name = "type")
+	String type;
 }

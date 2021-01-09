@@ -12,10 +12,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class CompanyDto {
 	
+	@JsonProperty(value = "_id")
+	Long id;
+	
 	@JsonProperty(value = "gstNumber")
 	String gstNumber;
 	
 	@JsonProperty(value = "companyName")
 	String companyName;
-
+	
 }

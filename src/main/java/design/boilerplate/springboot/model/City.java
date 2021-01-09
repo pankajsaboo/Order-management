@@ -28,7 +28,7 @@ public class City {
 	State stateId;
 	
 	
-	@Column(name = "city_name")
+	@Column(name = "city_name", unique = true)
 	String cityName;
 	
 	@Column(name = "city_code")

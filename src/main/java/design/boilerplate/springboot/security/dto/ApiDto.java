@@ -11,6 +11,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class ApiDto {
+	
+	@JsonProperty(value = "_id")
+	Long id;
 
 	@JsonProperty(value = "api_name")
 	String apiName;
