@@ -15,7 +15,7 @@ public class UserTypeDto {
 	@JsonProperty(value = "_id")
 	Long id;
 	
-	@JsonProperty(value = "userTypeName", required = true)
+	@JsonProperty(value = "userTypeName")
 	String userTypeName;
 	
 	@JsonProperty(value = "status")

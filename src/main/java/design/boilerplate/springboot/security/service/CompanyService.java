@@ -6,6 +6,8 @@ import design.boilerplate.springboot.security.dto.CompanyDto;
 public interface CompanyService {
 	
 	CompanyDto createCompany(CompanyDto companyDto);
+	
+	Company createCompany(Company company);
 
 	CompanyDto getCompany(Long id);
 	
@@ -16,5 +18,9 @@ public interface CompanyService {
 	CompanyDto updateCompany(CompanyDto companyDto);
 	
 	boolean deleteCompany(CompanyDto companyDto);
+
+	CompanyDto convertToCompanyDto(Company company);
+
+	Company convertToCompany(CompanyDto dto);
 
 }

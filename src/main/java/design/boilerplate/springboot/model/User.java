@@ -15,6 +15,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "users")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class User {
@@ -26,23 +27,26 @@ public class User {
 
 	String name;
 
+	@NonNull
 	@Column(unique = true)
 	String username;
 
+	@NonNull
 	String password;
 	
-	@ManyToOne
-	@JoinColumn(name = "company_id")
-	Company companyId;
+	@Column(name = "designation")
+	String designation;
+	
+	@Column(name = "employee_id")
+	String employeeId;
 	
 	@OneToOne
 	@JoinColumn(name = "user_type_id")
 	UserType userTypeId;
 	
+	@NonNull
 	@OneToOne
 	@JoinColumn(name = "roles_id")
 	Roles userRole;
-
 	
-
 }

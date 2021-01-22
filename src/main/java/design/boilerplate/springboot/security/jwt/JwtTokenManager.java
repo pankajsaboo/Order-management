@@ -1,6 +1,7 @@
 package design.boilerplate.springboot.security.jwt;
 
 import design.boilerplate.springboot.model.User;
+import design.boilerplate.springboot.security.dto.AuthenticatedUserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,13 +21,14 @@ public class JwtTokenManager {
 
 	// FIXME : Customize JWT token management for your application
 
-	public String generateToken(User user) {
+	public String generateToken(AuthenticatedUserDto user) {
 
 		final String username = user.getUsername();
 		final String userRole = user.getUserRole().getTitle();
 
 		final Claims claims = Jwts.claims().setSubject(username);
 		claims.put("role", userRole);
+		claims.put("userClaims", getUserSpecificClaims(userRole));
 
 		final long currentTimeMillis = System.currentTimeMillis();
 
@@ -69,6 +71,11 @@ public class JwtTokenManager {
 
 	private Claims getAllClaimsFromToken(String token) {
 		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+	}
+	
+	private Object getUserSpecificClaims(String userRole) {
+		
+		return new String("This is custom claim");
 	}
 
 }

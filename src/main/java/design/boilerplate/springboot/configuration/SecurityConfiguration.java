@@ -2,6 +2,8 @@ package design.boilerplate.springboot.configuration;
 
 import design.boilerplate.springboot.security.jwt.JwtAuthenticationEntryPoint;
 import design.boilerplate.springboot.security.jwt.JwtAuthenticationFilter;
+import design.boilerplate.springboot.security.service.RegistrationService;
+import design.boilerplate.springboot.security.service.RegistrationServiceImpl;
 import design.boilerplate.springboot.security.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	
 	@Autowired
-	private UserDetailsServiceImpl userDetailsServiceImpl;
+	private RegistrationServiceImpl registrationServiceImpl;
 
 	//private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -54,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(new BCryptPasswordEncoder());
+		auth.userDetailsService(registrationServiceImpl).passwordEncoder(new BCryptPasswordEncoder());
 	}
 
 }

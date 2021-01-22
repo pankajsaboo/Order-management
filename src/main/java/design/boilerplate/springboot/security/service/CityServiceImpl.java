@@ -10,7 +10,7 @@ import design.boilerplate.springboot.model.State;
 import design.boilerplate.springboot.repository.CityRepository;
 import design.boilerplate.springboot.repository.StateRepository;
 import design.boilerplate.springboot.security.dto.CityDto;
-import design.boilerplate.springboot.security.mapper.CityMapper;
+import design.boilerplate.springboot.security.mapper.AddressMapper;
 
 @Service
 public class CityServiceImpl implements CityService {
@@ -92,11 +92,11 @@ public class CityServiceImpl implements CityService {
 	}
 	
 	private CityDto convertCityToCityDto(City city) {
-		return CityMapper.INSTANCE.convertToCityDto(city);
+		return AddressMapper.INSTANCE.convertToCityDto(city);
 	}
 	
 	private City convertCityDtoToCity(CityDto cityDto) {
-		return CityMapper.INSTANCE.convertToCity(cityDto);
+		return AddressMapper.INSTANCE.convertToCity(cityDto);
 	}
 
 }

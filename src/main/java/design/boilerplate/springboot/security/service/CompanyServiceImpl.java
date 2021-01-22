@@ -21,6 +21,12 @@ public class CompanyServiceImpl implements CompanyService{
 
 		return convertToCompanyDto(companyRepository.save(company));
 	}
+	
+	@Override
+	public Company createCompany(Company company) {
+		
+		return companyRepository.save(company);
+	}
 
 	@Override
 	public CompanyDto getCompany(Long id) {
@@ -34,6 +40,7 @@ public class CompanyServiceImpl implements CompanyService{
 
 	@Override
 	public CompanyDto getCompanyByCompanyName(String companyName) {
+
 		return convertToCompanyDto(companyRepository.findByCompanyName(companyName));
 	}
 
@@ -64,7 +71,8 @@ public class CompanyServiceImpl implements CompanyService{
 		return false;
 	}
 
-	private CompanyDto convertToCompanyDto(Company company) {
+	@Override
+	public CompanyDto convertToCompanyDto(Company company) {
 
 		CompanyDto dto = new CompanyDto();
 
@@ -73,7 +81,8 @@ public class CompanyServiceImpl implements CompanyService{
 		return dto;
 	}
 
-	private Company convertToCompany(CompanyDto dto) {
+	@Override
+	public Company convertToCompany(CompanyDto dto) {
 
 		Company company = new Company();
 

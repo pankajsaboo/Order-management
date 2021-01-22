@@ -18,7 +18,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
 	@Override
 	public String createNewTraderAccount(TraderDto traderDto) {
 		
-		Company company = CompanyMapper.INSTANCE.ConvertToCompany(traderDto);
+		//Company company = CompanyMapper.INSTANCE.ConvertToCompany(traderDto);
 		
 		
 		return null;

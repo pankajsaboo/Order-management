@@ -3,6 +3,7 @@ package design.boilerplate.springboot.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,7 +39,7 @@ public class Menu {
 	boolean isParent;
 	
 	@ManyToOne
-	@JoinColumn(name = "menu_id")
+	@JoinColumn(name = "parentMenu_id")
 	Menu parentMenuId;
 	
 	@OneToMany(mappedBy = "parentMenuId")

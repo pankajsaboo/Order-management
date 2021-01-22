@@ -12,7 +12,7 @@ import design.boilerplate.springboot.repository.CountryRepository;
 import design.boilerplate.springboot.repository.StateRepository;
 import design.boilerplate.springboot.security.dto.CountryDto;
 import design.boilerplate.springboot.security.dto.StateDto;
-import design.boilerplate.springboot.security.mapper.CityMapper;
+import design.boilerplate.springboot.security.mapper.AddressMapper;
 
 @Service
 public class StateServiceImpl implements StateService {
@@ -95,12 +95,12 @@ public class StateServiceImpl implements StateService {
 	
 	private StateDto convertStateToStateDto(State state) {
 		
-		return CityMapper.INSTANCE.convertToStateDto(state);
+		return AddressMapper.INSTANCE.convertToStateDto(state);
 	}
 	
 	private State convertStateDtoToState(StateDto stateDto) {
 		
-		return CityMapper.INSTANCE.convertToState(stateDto);
+		return AddressMapper.INSTANCE.convertToState(stateDto);
 	}
 
 	

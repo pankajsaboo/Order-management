@@ -16,7 +16,6 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @Entity(name = "company_user_relation")
-@Builder
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class CompanyUserRelation extends Base{
 	

@@ -8,7 +8,10 @@ import design.boilerplate.springboot.security.mapper.UserMapper;
 import design.boilerplate.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -33,18 +36,23 @@ public class JwtTokenService {
 		final String username = loginRequest.getUsername();
 		final String password = loginRequest.getPassword();
 
-		final UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-
-		authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+//		final UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+//		authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
 		final AuthenticatedUserDto authenticatedUserDto = userService.findAuthenticatedUserByUsername(username);
+		
+		if(authenticatedUserDto == null) {
+			throw new BadCredentialsException("User does not exists");
+		}
+		if(!authenticatedUserDto.getPassword().equalsIgnoreCase(password)) {
+			throw new BadCredentialsException("Invalid password");
+		}
 
-		final User user = UserMapper.INSTANCE.convertToUser(authenticatedUserDto);
-		final String token = jwtTokenManager.generateToken(user);
+		final String token = jwtTokenManager.generateToken(authenticatedUserDto);
 
-		log.info(" {} has successfully logged in!", user.getUsername());
+		log.info(" {} has successfully logged in!", authenticatedUserDto.getUsername());
 
-		return new LoginResponse(token);
+		return new LoginResponse(token, "login successful", HttpStatus.ACCEPTED);
 	}
 
 }

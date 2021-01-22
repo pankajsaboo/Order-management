@@ -19,30 +19,30 @@ import design.boilerplate.springboot.security.service.MenuService;
 @RestController
 @RequestMapping("/menu")
 public class MenuController {
-	
+
 	@Autowired
 	MenuService menuService;
 
 	@PostMapping("/add")
-	public ResponseEntity<MenuDto> addNewMenu(@RequestBody MenuDto menuDto) {	
-		
+	public ResponseEntity<MenuDto> addNewMenu(@RequestBody MenuDto menuDto) {
+
 		return ResponseEntity.ok(menuService.createMenu(menuDto));
 	}
-	
+
 	@GetMapping("/{menuId}")
 	public ResponseEntity<MenuDto> getMenuByName(@PathVariable(name = "menuId") Long id) {
-		
+
 		return ResponseEntity.ok(menuService.getMenu(id));
 	}
-	
+
 //	@PutMapping("/update")
 //	public ResponseEntity<MenuDto> updateMenu(@RequestBody MenuDto menuDto) {
 //		return ResponseEntity.ok(menuService.updateMenu(menuDto));
 //	}
-	
+
 	@DeleteMapping("/remove")
 	public ResponseEntity<String> deleteMenu(@RequestBody MenuDto menuDto) {
-		 
+
 		return ResponseEntity.ok(!menuService.deleteMenu(menuDto) ? "Deleted" : "Something went wrong!");
 	}
 

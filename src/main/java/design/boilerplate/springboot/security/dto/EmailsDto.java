@@ -12,10 +12,18 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class EmailsDto {
 	
+	@JsonProperty(value = "_id")
+	Long id;
+	
 	@JsonProperty(value = "emailId")
 	String emailId;
 	
 	@JsonProperty(value = "emailType")
-	String emailType;
+	EmailTypeDto emailTypeId;
 
+	@JsonProperty(value = "company")
+	CompanyDto companyId;
+	
+	@JsonProperty(value = "user")
+	AuthenticatedUserDto userId;
 }

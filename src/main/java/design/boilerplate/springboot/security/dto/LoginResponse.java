@@ -1,5 +1,7 @@
 package design.boilerplate.springboot.security.dto;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,5 +17,9 @@ import lombok.Setter;
 public class LoginResponse {
 
 	private String token;
+	
+	private String message;
+	
+	private HttpStatus status;
 
 }

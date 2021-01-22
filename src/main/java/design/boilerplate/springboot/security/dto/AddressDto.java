@@ -28,12 +28,16 @@ public class AddressDto {
 	@JsonProperty(value = "addressLine3")
 	String addressLine3;
 	
-	@JsonProperty(value = "company")
-	Company companyId;
+	@JsonProperty(value = "companyId")
+	CompanyDto companyId;
 	
-	@JsonProperty(value = "city")
-	String city;
+	@JsonProperty(value = "userId")
+	AuthenticatedUserDto userId;
 	
 	@JsonProperty(value = "addressType")
-	String addressType;
+	AddressTypeDto addressType;
+	
+	@JsonProperty(value = "city")
+	CityDto city;
+
 }

@@ -3,6 +3,7 @@ package design.boilerplate.springboot.service;
 import design.boilerplate.springboot.exceptions.RegistrationException;
 import design.boilerplate.springboot.repository.EmailsRepository;
 import design.boilerplate.springboot.repository.UserRepository;
+import design.boilerplate.springboot.security.dto.EmailsDto;
 import design.boilerplate.springboot.security.dto.RegistrationRequest;
 import design.boilerplate.springboot.utils.ExceptionMessageAccessor;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,8 @@ public class UserValidationService {
 
 	public void validateUser(RegistrationRequest registrationRequest) {
 
-		final String email = registrationRequest.getEmail();
-		final String username = registrationRequest.getUsername();
+		final EmailsDto email = registrationRequest.getEmailId();
+		final String username = registrationRequest.getUserId().getUsername();
 
 		checkEmail(email);
 		checkUsername(username);
@@ -52,9 +53,9 @@ public class UserValidationService {
 
 	}
 
-	private void checkEmail(String email) {
+	private void checkEmail(EmailsDto email) {
 
-		final boolean existsByEmail = emailsRepository.existsByEmailId(email);
+		final boolean existsByEmail = emailsRepository.existsByEmailId(email.getEmailId());
 
 		if (existsByEmail) {
 

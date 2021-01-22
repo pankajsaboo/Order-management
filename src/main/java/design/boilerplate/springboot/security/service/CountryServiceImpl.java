@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import design.boilerplate.springboot.model.Country;
 import design.boilerplate.springboot.repository.CountryRepository;
 import design.boilerplate.springboot.security.dto.CountryDto;
-import design.boilerplate.springboot.security.mapper.CityMapper;
+import design.boilerplate.springboot.security.mapper.AddressMapper;
 
 @Service
 public class CountryServiceImpl implements CountryService {
@@ -87,12 +87,12 @@ public class CountryServiceImpl implements CountryService {
 	
 	private CountryDto convertCountryToCountryDto(Country country) {
 		
-		return CityMapper.INSTANCE.convertToCountryDto(country);
+		return AddressMapper.INSTANCE.convertToCountryDto(country);
 	}
 	
 	private Country convertCountryDtoToCountry(CountryDto countryDto) {
 		
-		return CityMapper.INSTANCE.convertToCountry(countryDto);
+		return AddressMapper.INSTANCE.convertToCountry(countryDto);
 	}
 
 	

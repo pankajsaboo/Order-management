@@ -3,6 +3,8 @@ package design.boilerplate.springboot.security.mapper;
 import design.boilerplate.springboot.model.User;
 import design.boilerplate.springboot.security.dto.AuthenticatedUserDto;
 import design.boilerplate.springboot.security.dto.RegistrationRequest;
+import design.boilerplate.springboot.security.dto.SalesPersonDto;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -17,10 +19,12 @@ public interface UserMapper {
 
 	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-	User convertToUser(RegistrationRequest registrationRequest);
+	//User convertToUser(RegistrationRequest registrationRequest);
 
 	AuthenticatedUserDto convertToAuthenticatedUserDto(User user);
 
 	User convertToUser(AuthenticatedUserDto authenticatedUserDto);
+	
+	AuthenticatedUserDto convertToAuthenticatedUserDto(SalesPersonDto salesPersonDto);
 
 }

@@ -23,6 +23,4 @@ public class ApiExceptionResponse {
 
 	private HttpStatus status;
 
-	private LocalDateTime time;
-
 }

@@ -13,12 +13,15 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class CompanyTypeRelationDto {
+	
+	@JsonProperty(value = "_id")
+	Long id;
 
 	@JsonProperty(value = "companyId")
-	Company companyId;
+	CompanyDto companyId;
 	
 	@JsonProperty(value = "companyTypeId")
-	CompanyType companyTypeId;
+	CompanyTypeDto companyTypeId;
 	
 	@JsonProperty(value = "status")
 	String status;

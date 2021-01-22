@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import design.boilerplate.springboot.security.dto.CompanyDto;
+import design.boilerplate.springboot.security.dto.CompanyTypeRelationDto;
 import design.boilerplate.springboot.security.service.CompanyService;
+import design.boilerplate.springboot.security.service.CompanyTypeRelationService;
 
 @CrossOrigin
 @RestController
@@ -22,11 +24,20 @@ public class CompanyController {
 	
 	@Autowired
 	CompanyService companyService;
+	
+	@Autowired
+	CompanyTypeRelationService companyTypeRelationService;
 
 	@PostMapping("/add")
 	public ResponseEntity<CompanyDto> addNewCompany(@RequestBody CompanyDto companyDto) {	
 		
 		return ResponseEntity.ok(companyService.createCompany(companyDto));
+	}
+	
+	@PostMapping("/relate")
+	public ResponseEntity<CompanyTypeRelationDto> addNewCompanyRelation(@RequestBody CompanyTypeRelationDto companyTypeRelationDto) {	
+		
+		return ResponseEntity.ok(companyTypeRelationService.createCompanyToCompanyTypeRelation(companyTypeRelationDto));
 	}
 	
 	@GetMapping("/{companyName}")

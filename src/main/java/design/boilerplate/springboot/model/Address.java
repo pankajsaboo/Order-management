@@ -33,6 +33,10 @@ public class Address extends Base {
 	@JoinColumn(name = "company_id")
 	Company companyId;
 	
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	User userId;
+	
 	@ManyToOne 
 	@JoinColumn(name = "city_id")
 	City cityId;
