@@ -3,30 +3,28 @@ package increpe.order.mgmt.security.service;
 import java.util.Collections;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import increpe.order.mgmt.model.Roles;
 import increpe.order.mgmt.security.dto.AuthenticatedUserDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * 
- *
- * 
- */
 @Slf4j
 @Service
-public class UserDetailsService {
+@RequiredArgsConstructor
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private static final String USERNAME_OR_PASSWORD_INVALID = "Invalid username or password.";
 
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 
+	@Override
 	public UserDetails loadUserByUsername(String username) {
 
 		final AuthenticatedUserDto authenticatedUser = userService.findAuthenticatedUserByUsername(username);
@@ -37,8 +35,8 @@ public class UserDetailsService {
 
 		final String authenticatedUsername = authenticatedUser.getUsername();
 		final String authenticatedPassword = authenticatedUser.getPassword();
-		final String userRole = authenticatedUser.getUserRole().getTitle();
-		final SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userRole);
+		final Roles userRole = authenticatedUser.getUserRole();
+		final SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userRole.getTitle());
 
 		return new User(authenticatedUsername, authenticatedPassword, Collections.singletonList(grantedAuthority));
 	}

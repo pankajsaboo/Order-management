@@ -14,7 +14,6 @@ import increpe.order.mgmt.security.dto.CompanyDto;
 import increpe.order.mgmt.security.dto.CompanyTypeRelationDto;
 import increpe.order.mgmt.security.dto.CompanyUserRelationDto;
 import increpe.order.mgmt.security.dto.RegistrationRequest;
-import increpe.order.mgmt.security.dto.TraderDto;
 import increpe.order.mgmt.security.dto.WorkAreaMasterDto;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)

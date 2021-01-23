@@ -6,7 +6,6 @@ import org.mapstruct.factory.Mappers;
 
 import increpe.order.mgmt.model.User;
 import increpe.order.mgmt.security.dto.AuthenticatedUserDto;
-import increpe.order.mgmt.security.dto.RegistrationRequest;
 import increpe.order.mgmt.security.dto.SalesPersonDto;
 
 /**
