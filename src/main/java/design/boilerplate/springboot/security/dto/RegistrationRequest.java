@@ -28,28 +28,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class RegistrationRequest {
 
-	@JsonProperty(value = "name")
-	String name;
+	@JsonProperty(value = "companyTypeRelationId")
+	CompanyTypeRelationDto companyTypeRelationId;
 	
-	@JsonProperty(value = "company")
-	CompanyDto companyId;
-	
-	@JsonProperty(value = "companyType")
-	CompanyTypeDto companyTypeId;
-	
-	@JsonProperty(value = "user")
+	@JsonProperty(value = "userId")
 	AuthenticatedUserDto userId;
 	
-	@JsonProperty(value = "email")
+	@JsonProperty(value = "emailId")
 	EmailsDto emailId;
 	
-	@JsonProperty(value = "phone")
+	@JsonProperty(value = "phoneId")
 	PhonesDto phoneId;
 	
 	@JsonProperty(value = "workAreaList")
 	List<WorkAreaMasterDto> workAreaList;
 	
-	@JsonProperty(value = "address")
+	@JsonProperty(value = "addressId")
 	AddressDto addressId;
 
 }

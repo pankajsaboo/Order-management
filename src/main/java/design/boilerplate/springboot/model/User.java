@@ -47,6 +47,6 @@ public class User {
 	@NonNull
 	@OneToOne
 	@JoinColumn(name = "roles_id")
-	Roles userRole;
+	Roles userRoleId;
 	
 }

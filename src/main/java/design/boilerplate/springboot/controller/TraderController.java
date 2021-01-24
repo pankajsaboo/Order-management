@@ -46,9 +46,9 @@ public class TraderController {
 	}
 	
 	@PostMapping("/masters/add")
-	public ResponseEntity<WorkAreaMasterDto> addNewWorkAreaMasters(@RequestBody WorkAreaMasterDto listDto) {	
+	public ResponseEntity<List<WorkAreaMasterDto>> addNewWorkAreaMasters(@RequestBody List<WorkAreaMasterDto> DtoList) {	
 		
-		return ResponseEntity.ok(masterService.createWorkAreaMaster(listDto));
+		return ResponseEntity.ok(masterService.createWorkAreaMaster(DtoList));
 	}
 	
 	@GetMapping("/masters/{companyId}")

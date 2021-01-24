@@ -1,5 +1,6 @@
 package design.boilerplate.springboot.security.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,13 @@ public class WorkAreaMasterServiceImpl implements WorkAreaMasterService {
 	CompanyService companyService;
 
 	@Override
-	public WorkAreaMasterDto createWorkAreaMaster(WorkAreaMasterDto dto) {
+	public List<WorkAreaMasterDto> createWorkAreaMaster(List<WorkAreaMasterDto> dtoList) {
 		
-		WorkAreaMaster master = convertMasterServiceDtoToMasterService(dto);
+		List<WorkAreaMaster> masterList = convertDtoListToMasterList(dtoList);
 		
-		return convertMasterServiceToMasterServiceDto(masterRepository.save(master));
+		Iterable<WorkAreaMaster> iterable = masterRepository.saveAll(masterList);
+		
+		return convertMasterListToDtoList((List<WorkAreaMaster>)iterable);
 	}
 
 	@Override
@@ -55,6 +58,18 @@ public class WorkAreaMasterServiceImpl implements WorkAreaMasterService {
 	public WorkAreaMasterDto convertMasterServiceToMasterServiceDto(WorkAreaMaster workAreaMaster) {
 		
 		return CompanyMapper.INSTANCE.convertToWorkAreaMasterDto(workAreaMaster);
+	}
+
+	@Override
+	public List<WorkAreaMaster> convertDtoListToMasterList(List<WorkAreaMasterDto> dtoList) {
+		
+		return CompanyMapper.INSTANCE.convertToWorkAreaMasterList(dtoList);
+	}
+
+	@Override
+	public List<WorkAreaMasterDto> convertMasterListToDtoList(List<WorkAreaMaster> masterList) {
+		
+		return CompanyMapper.INSTANCE.convertToWorkAreaMasterDtoList(masterList);
 	}
 
 }

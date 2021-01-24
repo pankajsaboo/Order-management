@@ -18,12 +18,12 @@ public class EmailsDto {
 	@JsonProperty(value = "emailId")
 	String emailId;
 	
-	@JsonProperty(value = "emailType")
+	@JsonProperty(value = "emailTypeId")
 	EmailTypeDto emailTypeId;
 
-	@JsonProperty(value = "company")
+	@JsonProperty(value = "companyId")
 	CompanyDto companyId;
 	
-	@JsonProperty(value = "user")
+	@JsonProperty(value = "userId")
 	AuthenticatedUserDto userId;
 }

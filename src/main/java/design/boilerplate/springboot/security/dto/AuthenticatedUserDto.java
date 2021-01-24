@@ -41,7 +41,7 @@ public class AuthenticatedUserDto {
 	@JsonProperty(value = "designation")
 	String designation;
 
-	@JsonProperty(value = "userRole")
-	RolesDto userRole;
+	@JsonProperty(value = "userRoleId")
+	RolesDto userRoleId;
 
 }

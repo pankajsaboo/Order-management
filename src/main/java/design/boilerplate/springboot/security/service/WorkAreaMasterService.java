@@ -7,7 +7,7 @@ import design.boilerplate.springboot.security.dto.WorkAreaMasterDto;
 
 public interface WorkAreaMasterService {
 	
-	WorkAreaMasterDto createWorkAreaMaster(WorkAreaMasterDto dto);
+	List<WorkAreaMasterDto> createWorkAreaMaster(List<WorkAreaMasterDto> dtoList);
 	
 	List<WorkAreaMasterDto> getWorkAreaMasterByCompany(Long id);
 	
@@ -18,5 +18,9 @@ public interface WorkAreaMasterService {
 	WorkAreaMaster convertMasterServiceDtoToMasterService(WorkAreaMasterDto dto);
 	
 	WorkAreaMasterDto convertMasterServiceToMasterServiceDto(WorkAreaMaster workAreaMaster);
+	
+	List<WorkAreaMaster> convertDtoListToMasterList(List<WorkAreaMasterDto> dtoList);
+	
+	List<WorkAreaMasterDto> convertMasterListToDtoList(List<WorkAreaMaster> masterList);
 	
 }

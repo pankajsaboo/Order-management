@@ -131,10 +131,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 	@Override
 	public Company registerCompany(RegistrationRequest registrationRequest) {
 
-		CompanyTypeRelationDto relationDto = CompanyMapper.INSTANCE
-				.convertToCompanyTypeRelationDto(registrationRequest);
-
-		return companyTypeRelationService.createRelation(relationDto).getCompanyId();
+		return companyTypeRelationService.createRelation(registrationRequest.getCompanyTypeRelationId()).getCompanyId();
 	}
 
 	@Override
@@ -142,7 +139,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 		
 		CompanyUserRelationDto relationDto = new CompanyUserRelationDto();
 		
-		relationDto.setCompanyId(request.getCompanyId());
+		relationDto.setCompanyId(request.getCompanyTypeRelationId().getCompanyId());
 		
 		relationDto.setUserId(request.getUserId());
 
@@ -154,7 +151,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 		userValidationService.validateUser(registrationRequest);
 		
-		Company companyId = CompanyMapper.INSTANCE.convertToCompany(registrationRequest.getCompanyId());
+		Company companyId = CompanyMapper.INSTANCE.convertToCompany(
+									registrationRequest.getCompanyTypeRelationId().getCompanyId());
 
 //		Company companyId = companyTypeRelationService
 //				.convertRelationDtoToRelation(
@@ -227,7 +225,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 		final String authenticatedUsername = authenticatedUser.getUsername();
 		final String authenticatedPassword = authenticatedUser.getPassword();
-		final String userRole = authenticatedUser.getUserRole().getTitle();
+		final String userRole = authenticatedUser.getUserRoleId().getTitle();
 		final SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userRole);
 
 		return (UserDetails) new User(authenticatedUsername, authenticatedPassword,

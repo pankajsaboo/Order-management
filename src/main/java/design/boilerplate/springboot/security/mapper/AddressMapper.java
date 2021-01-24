@@ -24,16 +24,11 @@ public interface AddressMapper {
 	AddressMapper INSTANCE = Mappers.getMapper(AddressMapper.class);
 	
 	
-	@Mappings({
-		@Mapping(source = "city", target = "cityId"),
-		@Mapping(source = "addressType", target = "addressTypeId")
-	})
+//	@Mappings({
+//		@Mapping(source = "city", target = "cityId"),
+//	})
 	Address convertToAddress(AddressDto addressDto);
 	
-	@Mappings({
-		@Mapping(source = "cityId", target = "city"),
-		@Mapping(source = "addressTypeId", target = "addressType")
-	})
 	AddressDto convertToAddressDto(Address address);
 	
 	@Mapping(source = "state", target = "stateId")
@@ -42,10 +37,8 @@ public interface AddressMapper {
 	@Mapping(source = "stateId", target = "state")
 	CityDto convertToCityDto(City city);
 	
-	@Mapping(source = "country", target = "countryId")
 	State convertToState(StateDto stateDto);
 	
-	@Mapping(source = "countryId", target = "country")
 	StateDto convertToStateDto(State state);
 	
 	Country convertToCountry(CountryDto countryDto);

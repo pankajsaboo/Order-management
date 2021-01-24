@@ -16,8 +16,8 @@ public class StateDto {
 	@JsonProperty(value = "_id")
 	Long id;
 	
-	@JsonProperty(value = "country")
-	CountryDto country;
+	@JsonProperty(value = "countryId")
+	CountryDto countryId;
 	
 	@JsonProperty(value = "stateName")
 	String stateName;

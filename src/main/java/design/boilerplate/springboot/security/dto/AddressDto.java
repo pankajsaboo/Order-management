@@ -34,10 +34,10 @@ public class AddressDto {
 	@JsonProperty(value = "userId")
 	AuthenticatedUserDto userId;
 	
-	@JsonProperty(value = "addressType")
-	AddressTypeDto addressType;
+	@JsonProperty(value = "addressTypeId")
+	AddressTypeDto addressTypeId;
 	
-	@JsonProperty(value = "city")
-	CityDto city;
+	@JsonProperty(value = "cityId")
+	CityDto cityId;
 
 }

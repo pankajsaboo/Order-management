@@ -50,11 +50,11 @@ public class UserServiceImpl implements UserService {
 
 		UserType userTypeId = userTypeService.getUserTypeByName(user.getUserTypeId().getUserTypeName());
 
-		Roles userRoleId = rolesService.getRolesByTitle(user.getUserRole().getTitle());
+		Roles userRoleId = rolesService.getRolesByTitle(user.getUserRoleId().getTitle());
 
 		user.setUserTypeId(userTypeId);
 
-		user.setUserRole(userRoleId);
+		user.setUserRoleId(userRoleId);
 
 		return userRepository.save(user);
 	}
