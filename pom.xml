@@ -9,23 +9,13 @@
         <version>2.3.3.RELEASE</version>
     </parent>
 
-    <groupId>design.boilerplate</groupId>
-    <artifactId>spring-boot</artifactId>
+    <groupId>increpe.ordermanagement</groupId>
+    <artifactId>order-management</artifactId>
     <version>1.0.0</version>
     <name>Order-Management</name>
-    <!-- <description>
-        Spring Boot Boilerplate is a starter kit. This project includes : Spring Boot(2.3.3), Spring Data JPA, Spring Validation, Spring Security +
-        JWT Token, PostgreSQL, Mapstruct, Lombok, Swagger
-    </description>
+    <packaging>war</packaging>
 
-    <developers>
-        <developer>
-            <name>Faruk Genç</name>
-            <email>omer@farukgenc.com</email>
-            <url>https://farukgenc.com</url>
-        </developer>
-    </developers> -->
-
+         
     <properties>
         <java.version>1.8</java.version>
         <jwt.version>0.9.0</jwt.version>
@@ -126,16 +116,17 @@
     </dependencies>
 
     <build>
-
-        <finalName>order-management</finalName>
-
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+         <plugins>
+                  <plugin>
+                           <groupId>org.springframework.boot</groupId>
+                           <artifactId>spring-boot-maven-plugin</artifactId>
+                  </plugin>
+                  <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-war-plugin</artifactId>
+                  <version>3.2.3</version>
             </plugin>
         </plugins>
-
     </build>
 
 </project>
