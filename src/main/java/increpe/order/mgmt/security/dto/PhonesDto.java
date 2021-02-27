@@ -15,18 +15,13 @@ public class PhonesDto {
 	@JsonProperty(value = "_id")
 	Long id;
 	
-	@JsonProperty(value = "phoneNumber")
 	String phone;
 	
-	@JsonProperty(value = "phoneType")
 	PhoneTypeDto phoneTypeId;
 
-	@JsonProperty(value = "company")
 	CompanyDto companyId;
 	
-	@JsonProperty(value = "user")
 	AuthenticatedUserDto userId;
 	
-	@JsonProperty(value = "status")
 	String status;
 }

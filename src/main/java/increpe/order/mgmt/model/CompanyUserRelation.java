@@ -1,7 +1,9 @@
 package increpe.order.mgmt.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,18 +19,18 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Entity(name = "company_user_relation")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class CompanyUserRelation extends Base{
+public class CompanyUserRelation{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "company_user_relation_seq")
 	@SequenceGenerator(name = "COMPANY_USER_RELATION_SEQ", sequenceName = "company_user_relation_seq")
 	Long id;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "company_id")
 	Company companyId;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	User userId;
 

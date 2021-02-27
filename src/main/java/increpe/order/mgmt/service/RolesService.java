@@ -25,9 +25,9 @@ public class RolesService {
 	}
 
 	
-	public RolesDto getRoles(Long id) {
+	public Roles getRoles(Long id) {
 
-		return convertToRolesDto(rolesRepository.findById(id).get());
+		return rolesRepository.findById(id).get();
 	}
 
 	

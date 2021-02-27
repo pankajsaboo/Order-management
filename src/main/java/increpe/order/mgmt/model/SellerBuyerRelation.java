@@ -16,22 +16,27 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Entity(name = "seller_buyer_relation")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class SellerBuyerRelation extends Base{
+public class SellerBuyerRelation{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seller_buyer_relation_seq")
 	@SequenceGenerator(name = "SELLER_BUYER_RELATION_SEQ", sequenceName = "seller_buyer_relation_seq")
 	Long id;
 	
+//	@Column(name = "seller_company_id")
+//	Long sellerCompanyId;
+//	
+//	@Column(name = "buyer_company_id")
+//	Long buyerCompanyId;
+	
 	@OneToOne
-	@JoinColumn(name = "company_id", insertable = false, updatable = false)
+	@JoinColumn(name = "seller_company_id", referencedColumnName = "id")
 	Company sellerCompanyId;
 	
 	@OneToOne
-	@JoinColumn(name = "company_id", insertable = false, updatable = false)
+	@JoinColumn(name = "buyer_company_id", referencedColumnName = "id")
 	Company buyerCompanyId;
 	
 	@Column(name = "status")
 	String status;
-
 }

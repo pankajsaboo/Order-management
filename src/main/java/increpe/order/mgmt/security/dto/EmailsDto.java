@@ -18,7 +18,7 @@ public class EmailsDto {
 	@JsonProperty(value = "emailId")
 	String emailId;
 	
-	@JsonProperty(value = "emailType")
+	@JsonProperty(value = "emailTypeId")
 	EmailTypeDto emailTypeId;
 
 	@JsonProperty(value = "company")

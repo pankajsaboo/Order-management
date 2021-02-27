@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import increpe.order.mgmt.model.Company;
 import increpe.order.mgmt.model.ProductMaster;
+import increpe.order.mgmt.security.dto.ProductMasterDto;
 
 public interface ProductMasterRepository extends CrudRepository<ProductMaster, Long> {
 	
@@ -13,6 +14,8 @@ public interface ProductMasterRepository extends CrudRepository<ProductMaster, L
 	
 	List<ProductMaster> findByProductBrand(String productBrand);
 	
-	List<ProductMaster> findByCompanyId_id(Company companyId);
+	List<ProductMaster> findByCompanyId_id(Long companyId);
+
+	//List<ProductMaster> saveAll(List<ProductMasterDto> productList);
 
 }

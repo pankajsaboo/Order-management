@@ -4,6 +4,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import increpe.order.mgmt.model.Company;
+import increpe.order.mgmt.model.CompanyUserRelation;
+import increpe.order.mgmt.repository.CompanyUserRelationRepository;
+
 /**
  * 
  *
@@ -21,13 +25,13 @@ public class SecurityConstants {
 	/**
 	 * Secret key for signature
 	 */
-	public static final String SECRET_KEY = "mySecretKey";
+	public static final String SECRET_KEY = "Increpe@2020";
 
 	/**
 	 * The company who provided token.
 	 * You can customize issuer name, this is given as an example.
 	 */
-	public static final String ISSUER = "www.boilerplate.design";
+	public static final String ISSUER = "IncrepeTechnologies";
 
 	/**
 	 * Token Prefix
@@ -60,6 +64,11 @@ public class SecurityConstants {
 		final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
 		return userDetails.getUsername();
+	}
+	
+	public static Company getAuthenticatedCompany() {
+		
+		return (Company) ((CompanyUserRelation) SecurityContextHolder.getContext().getAuthentication().getDetails()).getCompanyId();
 	}
 
 }

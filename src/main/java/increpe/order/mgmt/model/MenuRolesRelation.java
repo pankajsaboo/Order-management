@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Entity(name = "menu_roles_relation")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class MenuRolesRelation extends Base{
+public class MenuRolesRelation{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "menu_roles_relation_seq")

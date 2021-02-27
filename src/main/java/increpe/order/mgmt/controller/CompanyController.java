@@ -37,7 +37,9 @@ public class CompanyController {
 	@PostMapping("/relate")
 	public ResponseEntity<CompanyTypeRelationDto> addNewCompanyRelation(@RequestBody CompanyTypeRelationDto companyTypeRelationDto) {	
 		
-		return ResponseEntity.ok(companyTypeRelationService.createCompanyToCompanyTypeRelation(companyTypeRelationDto));
+		return ResponseEntity.ok(
+				companyTypeRelationService.convertRelationToRelationDto(
+						companyTypeRelationService.createRelation(companyTypeRelationDto)));
 	}
 	
 	@GetMapping("/{companyName}")

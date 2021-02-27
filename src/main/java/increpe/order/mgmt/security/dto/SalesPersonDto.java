@@ -1,5 +1,8 @@
 package increpe.order.mgmt.security.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AccessLevel;
@@ -14,34 +17,22 @@ public class SalesPersonDto {
 
 	@JsonProperty(value = "_id")
 	Long id;
+
+	CompanyTypeRelationDto companyTypeRelationId;
 	
-	@JsonProperty(value = "employeeId")
+	AuthenticatedUserDto userId;
+	
 	String employeeId;
 	
-	@JsonProperty(value = "fullName")
-	String name;
-
-	@JsonProperty(value = "username")
-	String username;
-
-	@JsonProperty(value = "password")
-	String password;
-	
-	@JsonProperty(value = "designation")
 	String designation;
 	
-	@JsonProperty(value = "headquarter")
-	AddressDto cityName;
+	String headquarters;
 	
-	@JsonProperty(value = "workArea")
-	String workAreaId;
+	EmailsDto emailId;
 	
-	@JsonProperty(value = "phone")
-	PhonesDto phone;
+	PhonesDto phoneId;
 	
-	@JsonProperty(value = "usertype")
-	UserTypeDto userTypeId;
+	AddressDto addressId;
 	
-	@JsonProperty(value = "role")
-	RolesDto userRole;
+	List<WorkAreaMasterDto> workAreaMasterList = new ArrayList<>();
 }

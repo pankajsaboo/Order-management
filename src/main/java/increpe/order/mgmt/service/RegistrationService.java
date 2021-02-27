@@ -1,11 +1,14 @@
 package increpe.order.mgmt.service;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,20 +19,24 @@ import increpe.order.mgmt.model.Company;
 import increpe.order.mgmt.model.Emails;
 import increpe.order.mgmt.model.Phone;
 import increpe.order.mgmt.model.Roles;
+import increpe.order.mgmt.model.SalesPerson;
 import increpe.order.mgmt.model.User;
-import increpe.order.mgmt.model.UserWorkAreaRelation;
+import increpe.order.mgmt.model.SalesPersonWorkAreaRelation;
 import increpe.order.mgmt.model.WorkAreaMaster;
-import increpe.order.mgmt.repository.UserWorkAreaRelationRepository;
+import increpe.order.mgmt.repository.SalesPersonWorkAreaRelationRepository;
 import increpe.order.mgmt.security.dto.AddressDto;
 import increpe.order.mgmt.security.dto.AuthenticatedUserDto;
+import increpe.order.mgmt.security.dto.CompanyDto;
 import increpe.order.mgmt.security.dto.CompanyTypeRelationDto;
 import increpe.order.mgmt.security.dto.CompanyUserRelationDto;
 import increpe.order.mgmt.security.dto.EmailsDto;
 import increpe.order.mgmt.security.dto.PhonesDto;
 import increpe.order.mgmt.security.dto.RegistrationRequest;
 import increpe.order.mgmt.security.dto.RegistrationResponse;
+import increpe.order.mgmt.security.dto.SalesPersonDto;
 import increpe.order.mgmt.security.dto.WorkAreaMasterDto;
 import increpe.order.mgmt.security.mapper.CompanyMapper;
+import increpe.order.mgmt.security.mapper.UserMapper;
 import increpe.order.mgmt.security.service.UserService;
 import increpe.order.mgmt.utils.GeneralMessageAccessor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,10 +50,10 @@ public class RegistrationService {
 
 	@Autowired
 	CompanyTypeRelationService companyTypeRelationService;
-	
+
 	@Autowired
 	CompanyUserRelationService companyUserRelationService;
-	
+
 	@Autowired
 	CompanyService companyServie;
 
@@ -70,27 +77,26 @@ public class RegistrationService {
 
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	WorkAreaMasterService workAreaService;
-	
+
 	@Autowired
-	UserWorkAreaRelationRepository relationRepository;
+	SalesPersonService salesPersonService;
 
-	
-	public RegistrationResponse registerCustomer(RegistrationRequest registrationRequest) {
+	public RegistrationResponse register(RegistrationRequest registrationRequest) {
 
 		userValidationService.validateUser(registrationRequest);
 
-		Company companyId = registerCompany(registrationRequest);
+		CompanyDto companyId = registerCompany(registrationRequest);
 
-		User userId = registerUser(registrationRequest);
+		AuthenticatedUserDto userId = registerUser(companyId, registrationRequest.getUserId());
 
-		Address address = registerAddress(registrationRequest.getAddressId(), companyId, userId);
+		registerAddress(registrationRequest.getAddressId(), companyId, userId);
 
-		Emails email = registerEmail(registrationRequest.getEmailId(), companyId, userId);
+		registerEmail(registrationRequest.getEmailId(), companyId, userId);
 
-		Phone phone = registerPhone(registrationRequest.getPhoneId(), companyId, userId);
+		registerPhone(registrationRequest.getPhoneId(), companyId, userId);
 
 		final String username = userId.getUsername();
 		final String registrationSuccessMessage = generalMessageAccessor.getMessage(null, REGISTRATION_SUCCESSFUL,
@@ -101,20 +107,42 @@ public class RegistrationService {
 		return new RegistrationResponse(registrationSuccessMessage);
 	}
 
-	
-	public RegistrationResponse registerBuyer(RegistrationRequest registrationRequest) {
+	public Company registerCustomer(RegistrationRequest registrationRequest) {
 
-		userValidationService.validateUser(registrationRequest);
+		CompanyDto companyId = registerCompany(registrationRequest);
 
-		Company companyId = registerCompany(registrationRequest);
+		AuthenticatedUserDto userId = registerUser(companyId, registrationRequest.getUserId());
 
-		User userId = registerUser(registrationRequest);
+		registerAddress(registrationRequest.getAddressId(), companyId, userId);
 
-		Address address = registerAddress(registrationRequest.getAddressId(), companyId, userId);
+		registerEmail(registrationRequest.getEmailId(), companyId, userId);
 
-		Emails email = registerEmail(registrationRequest.getEmailId(), companyId, userId);
+		registerPhone(registrationRequest.getPhoneId(), companyId, userId);
 
-		Phone phone = registerPhone(registrationRequest.getPhoneId(), companyId, userId);
+		return companyServie.convertToCompany(companyId);
+	}
+
+	public RegistrationResponse registerSalesPerson(SalesPersonDto salesPersonDto) {
+
+		userValidationService.validateSalesPerson(salesPersonDto);
+
+		CompanyDto companyId = salesPersonDto.getCompanyTypeRelationId().getCompanyId();
+
+		AuthenticatedUserDto userId = registerUser(companyId, salesPersonDto.getUserId());
+
+		salesPersonDto.setUserId(userId);
+
+		List<WorkAreaMasterDto> workAreaList = salesPersonDto.getWorkAreaMasterList();
+
+		SalesPerson salesPerson = salesPersonService.creatSalesPersonAccount(salesPersonDto);
+
+		salesPersonService.mapWorkAreaToSalesPerson(workAreaList, salesPerson);
+
+		registerAddress(salesPersonDto.getAddressId(), companyId, userId);
+
+		registerEmail(salesPersonDto.getEmailId(), companyId, userId);
+
+		registerPhone(salesPersonDto.getPhoneId(), companyId, userId);
 
 		final String username = userId.getUsername();
 		final String registrationSuccessMessage = generalMessageAccessor.getMessage(null, REGISTRATION_SUCCESSFUL,
@@ -125,122 +153,65 @@ public class RegistrationService {
 		return new RegistrationResponse(registrationSuccessMessage);
 	}
 
-	
-	public Company registerCompany(RegistrationRequest registrationRequest) {
+	public CompanyDto registerCompany(RegistrationRequest registrationRequest) {
 
-		CompanyTypeRelationDto relationDto = CompanyMapper.INSTANCE
-				.convertToCompanyTypeRelationDto(registrationRequest);
+		CompanyTypeRelationDto relationDto = registrationRequest.getCompanyTypeRelationId();
 
-		return companyTypeRelationService.createRelation(relationDto).getCompanyId();
+		return companyTypeRelationService
+				.convertRelationToRelationDto(companyTypeRelationService.createRelation(relationDto)).getCompanyId();
 	}
 
-	
-	public User registerUser(RegistrationRequest request) {
-		
+	public AuthenticatedUserDto registerUser(CompanyDto companyId, AuthenticatedUserDto userId) {
+
 		CompanyUserRelationDto relationDto = new CompanyUserRelationDto();
-		
-		relationDto.setCompanyId(request.getCompanyId());
-		
-		relationDto.setUserId(request.getUserId());
+
+		relationDto.setCompanyId(companyId);
+
+		relationDto.setUserId(userId);
 
 		return companyUserRelationService.createRelation(relationDto).getUserId();
 	}
 
-	
-	public RegistrationResponse registerSalesPerson(RegistrationRequest registrationRequest) {
+	public EmailsDto registerEmail(EmailsDto emailDto, CompanyDto companyId, AuthenticatedUserDto userId) {
 
-		userValidationService.validateUser(registrationRequest);
-		
-		Company companyId = CompanyMapper.INSTANCE.convertToCompany(registrationRequest.getCompanyId());
+		if (Objects.isNull(emailDto))
+			return null;
 
-//		Company companyId = companyTypeRelationService
-//				.convertRelationDtoToRelation(
-//						companyTypeRelationService.getRelationByCompany(registrationRequest.getCompanyId()))
-//				.getCompanyId();
+		EmailsDto updatedDto = new EmailsDto();
+		BeanUtils.copyProperties(emailDto, updatedDto);
 
-		User userId = registerUser(registrationRequest);
-		
-		mapWorkAreaToUser(registrationRequest.getWorkAreaList(), userId);
+		updatedDto.setCompanyId(companyId);
+		updatedDto.setUserId(userId);
 
-		Address address = registerAddress(registrationRequest.getAddressId(), companyId, userId);
-
-		Emails email = registerEmail(registrationRequest.getEmailId(), companyId, userId);
-
-		Phone phone = registerPhone(registrationRequest.getPhoneId(), companyId, userId);
-
-		final String username = userId.getUsername();
-		final String registrationSuccessMessage = generalMessageAccessor.getMessage(null, REGISTRATION_SUCCESSFUL,
-				username);
-
-		log.info("{} registered successfully!", username);
-
-		return new RegistrationResponse(registrationSuccessMessage);
+		return emailService.createEmail(updatedDto);
 	}
 
-	
-	public Emails registerEmail(EmailsDto eDto, Company companyId, User userId) {
+	public PhonesDto registerPhone(PhonesDto phoneDto, CompanyDto companyId, AuthenticatedUserDto userId) {
 
-		Emails emailId = emailService.convertToEmails(eDto);
+		if (Objects.isNull(phoneDto))
+			return null;
 
-		emailId.setCompanyId(companyId);
+		PhonesDto updatedDto = new PhonesDto();
+		BeanUtils.copyProperties(phoneDto, updatedDto);
 
-		emailId.setUserId(userId);
+		updatedDto.setCompanyId(companyId);
+		updatedDto.setUserId(userId);
 
-		return emailService.createEmail(emailId);
+		return phoneService.createPhone(updatedDto);
 	}
 
-	
-	public Phone registerPhone(PhonesDto pDto, Company companyId, User userId) {
+	public AddressDto registerAddress(AddressDto addressDto, CompanyDto companyId, AuthenticatedUserDto userId) {
 
-		Phone phoneId = phoneService.convertToPhone(pDto);
+		if (Objects.isNull(addressDto))
+			return null;
 
-		phoneId.setCompanyId(companyId);
+		AddressDto updatedDto = new AddressDto();
+		BeanUtils.copyProperties(addressDto, updatedDto);
 
-		phoneId.setUserId(userId);
+		updatedDto.setCompanyId(companyId);
+		updatedDto.setUserId(userId);
 
-		return phoneService.createPhone(phoneId);
-	}
+		return addressService.createAddress(updatedDto);
 
-	
-	public Address registerAddress(AddressDto aDto, Company companyId, User userId) {
-
-		Address addressId = addressService.convertAddressDtoToAddress(aDto);
-
-		addressId.setCompanyId(companyId);
-
-		addressId.setUserId(userId);
-
-		return addressService.createAddress(addressId);
-	}
-
-	
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-		final AuthenticatedUserDto authenticatedUser = userService.findAuthenticatedUserByUsername(username);
-
-		if (Objects.isNull(authenticatedUser)) {
-			throw new UsernameNotFoundException(USERNAME_OR_PASSWORD_INVALID);
-		}
-
-		final String authenticatedUsername = authenticatedUser.getUsername();
-		final String authenticatedPassword = authenticatedUser.getPassword();
-		final String userRole = authenticatedUser.getUserRole().getTitle();
-		final SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userRole);
-
-		return (UserDetails) new User(authenticatedUsername, authenticatedPassword,
-				(Roles) Collections.singletonList(grantedAuthority));
-	}
-	
-	private UserWorkAreaRelation mapWorkAreaToUser(List<WorkAreaMasterDto> workAreaMasterDtoList, User userId) {
-		
-		List<WorkAreaMaster> masterList = CompanyMapper.INSTANCE.convertToWorkAreaMasterList(workAreaMasterDtoList);
-		
-		UserWorkAreaRelation relation = new UserWorkAreaRelation();
-		
-		relation.setUserId(userId);
-		
-		relation.setWorkAreaMasterIdList(masterList);
-		
-		return relationRepository.save(relation);
 	}
 }

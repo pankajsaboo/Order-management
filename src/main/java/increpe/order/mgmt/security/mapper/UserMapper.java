@@ -5,8 +5,10 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import increpe.order.mgmt.model.User;
+import increpe.order.mgmt.model.UserType;
 import increpe.order.mgmt.security.dto.AuthenticatedUserDto;
 import increpe.order.mgmt.security.dto.SalesPersonDto;
+import increpe.order.mgmt.security.dto.UserTypeDto;
 
 /**
  * 
@@ -25,5 +27,9 @@ public interface UserMapper {
 	User convertToUser(AuthenticatedUserDto authenticatedUserDto);
 	
 	AuthenticatedUserDto convertToAuthenticatedUserDto(SalesPersonDto salesPersonDto);
+	
+	UserTypeDto convertToUserTypeDto(UserType userType);
+	
+	UserType convertToUserType(UserTypeDto userTypeDto);
 
 }

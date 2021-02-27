@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import increpe.order.mgmt.model.Roles;
 import increpe.order.mgmt.security.dto.AuthenticatedUserDto;
+import increpe.order.mgmt.security.dto.RolesDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		final String authenticatedUsername = authenticatedUser.getUsername();
 		final String authenticatedPassword = authenticatedUser.getPassword();
-		final Roles userRole = authenticatedUser.getUserRole();
+		final RolesDto userRole = authenticatedUser.getUserRole();
 		final SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userRole.getTitle());
 
 		return new User(authenticatedUsername, authenticatedPassword, Collections.singletonList(grantedAuthority));

@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Entity(name = "product_master")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class ProductMaster extends Base{
+public class ProductMaster{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "product_master_seq")
@@ -38,6 +38,9 @@ public class ProductMaster extends Base{
 	
 	@Column(name = "product_brand")
 	String productBrand;
+	
+	@Column(name = "product_image", columnDefinition = "TEXT")
+	String productImage;
 	
 	@Column(name = "status")
 	String status;

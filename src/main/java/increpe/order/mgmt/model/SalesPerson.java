@@ -3,8 +3,10 @@ package increpe.order.mgmt.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,20 +20,25 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Entity(name = "user_work_area_relation")
+@Entity(name = "sales_person")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class UserWorkAreaRelation {
+public class SalesPerson {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_work_area_relation_seq")
-	@SequenceGenerator(name = "USER_WORK_AREA_RELATION_SEQ", sequenceName = "user_work_area_relation_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "sales_person_seq")
+	@SequenceGenerator(name = "SALES_PERSON_SEQ", sequenceName = "sales_person_seq")
 	Long id;
 	
-	@OneToOne()
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	User userId;
 	
-	@OneToMany(mappedBy = "userWorkAreaRelationId")
-	List<WorkAreaMaster> workAreaMasterIdList = new ArrayList<>();
+	@Column(name = "employeeId", unique = true)
+	String employeeId;
 	
+	@Column(name = "designation")
+	String designation;
+	
+	@Column(name = "headquarters")
+	String headquarters;
 }

@@ -1,5 +1,7 @@
 package increpe.order.mgmt.service;
 
+import java.util.Objects;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import increpe.order.mgmt.model.Emails;
 import increpe.order.mgmt.repository.EmailsRepository;
 import increpe.order.mgmt.security.dto.EmailTypeDto;
 import increpe.order.mgmt.security.dto.EmailsDto;
+import increpe.order.mgmt.security.mapper.CompanyMapper;
 
 @Service
 public class EmailService {
@@ -54,39 +57,38 @@ public class EmailService {
 		
 		email.setEmailTypeId(emailTypeId);
 		
-		return convertToEmailsDto(email);
+		return convertToEmailsDto(emailsRepository.save(email));
 	}
 	
+	public EmailsDto getEmailByUserId(Long id) {
+		
+		return convertToEmailsDto(emailsRepository.findByUserId_id(id));
+	}
+	
+	public EmailsDto updateEmail(EmailsDto dto) {
+		
+		if(Objects.isNull(dto.getId())) {
+			return createEmail(dto);
+		}
+		
+		return convertToEmailsDto(emailsRepository.save(convertToEmails(dto)));
+	}
 	
 	public EmailsDto convertToEmailsDto(Emails email) {
-
-		EmailsDto dto = new EmailsDto();
 		
-		EmailTypeDto typeDto = new EmailTypeDto();
-		
-		BeanUtils.copyProperties(email.getEmailTypeId(), typeDto);
+		if(Objects.isNull(email))
+			return null;
 
-		dto.setEmailTypeId(typeDto);
-
-		BeanUtils.copyProperties(email, dto);
-
-		return dto;
+		return CompanyMapper.INSTANCE.convertToEmailsDto(email);
 	}
 
 	
 	public Emails convertToEmails(EmailsDto dto) {
-
-		Emails emails = new Emails();
 		
-		EmailType type = new EmailType();
-		
-		BeanUtils.copyProperties(dto.getEmailTypeId(), type);
-		
-		emails.setEmailTypeId(type);
+		if(Objects.isNull(dto))
+			return null;
 
-		BeanUtils.copyProperties(dto, emails);
-
-		return emails;
+		return CompanyMapper.INSTANCE.convertToEmails(dto);
 	}
 
 }

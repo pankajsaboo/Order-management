@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AuthenticatedUserDto {
+	
+	private Long id;
 
 	private String name;
 
@@ -16,6 +18,10 @@ public class AuthenticatedUserDto {
 
 	private String password;
 
-	private Roles userRole;
+	private RolesDto userRole;
+	
+	private UserTypeDto userTypeId;
+	
+	private String profilePicture;
 
 }

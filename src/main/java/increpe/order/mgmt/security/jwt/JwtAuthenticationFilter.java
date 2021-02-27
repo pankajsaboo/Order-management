@@ -23,6 +23,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import increpe.order.mgmt.model.CompanyUserRelation;
+import increpe.order.mgmt.security.service.UserService;
+import increpe.order.mgmt.service.CompanyUserRelationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,6 +42,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtTokenManager jwtTokenManager;
 
 	private final UserDetailsService userDetailsService;
+	
+	private final CompanyUserRelationService userRelationService;
+	
+	private final UserService userService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -69,11 +76,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		if (Objects.nonNull(username) && Objects.isNull(securityContext.getAuthentication())) {
 
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+			
+			CompanyUserRelation userRelationDetails = userRelationService.getRelationByUser(userService.findByUsername(username));
 
 			if (jwtTokenManager.validateToken(authToken, userDetails.getUsername())) {
 
 				final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,userDetails.getAuthorities());
-				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+				authentication.setDetails(userRelationDetails);
 				log.info("Authentication successful. Logged in username : {} ", username);
 				securityContext.setAuthentication(authentication);
 			}

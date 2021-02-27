@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import lombok.AccessLevel;
@@ -27,13 +27,11 @@ public class WorkAreaMaster {
 	@SequenceGenerator(name = "WORK_AREA_SEQ", sequenceName = "work_area_seq")
 	Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "company_id")
 	Company companyId;
 	
 	@Column(name = "master_list")
 	String workArea;
 	
-	@ManyToOne()
-	UserWorkAreaRelation userWorkAreaRelationId;
 }

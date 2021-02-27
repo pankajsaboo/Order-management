@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Entity(name = "address")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class Address extends Base {
+public class Address {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "address_seq")

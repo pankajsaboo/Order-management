@@ -17,7 +17,7 @@ public final class ProjectConstants {
 	
 	public static final Long[] COMPANY_TYPE_ID_ARRAY = {1L, 2L, 3L}; 
 
-	public static final String PROJECT_BASE_PACKAGE = "design.boilerplate.springboot";
+	public static final String PROJECT_BASE_PACKAGE = "increpe.order.mgmt";
 
 	public static final Locale LOCALE_INDIA = new Locale.Builder().setLanguage("en").setRegion("IN").build();
 	

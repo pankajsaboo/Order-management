@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import increpe.order.mgmt.model.CompanyUserRelation;
 import increpe.order.mgmt.model.User;
 import increpe.order.mgmt.repository.CompanyUserRelationRepository;
+import increpe.order.mgmt.security.dto.AuthenticatedUserDto;
 import increpe.order.mgmt.security.dto.CompanyUserRelationDto;
 import increpe.order.mgmt.security.mapper.CompanyMapper;
 import increpe.order.mgmt.security.service.UserService;
@@ -25,27 +26,28 @@ public class CompanyUserRelationService {
 	UserService userService;
 
 	
-	public CompanyUserRelation createRelation(CompanyUserRelationDto companyUserRelationDto) {
-		
-		CompanyUserRelation relation = convertRelationDtoToRelation(companyUserRelationDto);
+	public CompanyUserRelationDto createRelation(CompanyUserRelationDto companyUserRelationDto) {
 		
 		User userId = userService.createUser(companyUserRelationDto.getUserId());
 		
+		CompanyUserRelation relation = convertRelationDtoToRelation(companyUserRelationDto);
+		
 		relation.setUserId(userId);
 		
-		return relationRepository.save(relation);
+		return convertRelationToRelationDto(relationRepository.save(relation));
 	}
 
 	
-	public CompanyUserRelationDto createCompanyToUserRelation(CompanyUserRelationDto companyUserRelationDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	public CompanyUserRelationDto createCompanyToUserRelation(CompanyUserRelationDto companyUserRelationDto) {
+//		// TODO Auto-generated method stub
+//		return convertRelationToRelationDto(createRelation(companyUserRelationDto));
+//	}
 
 	
-	public CompanyUserRelationDto getRelation(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public CompanyUserRelationDto getRelationByCompanyAndUserType(Long companyId, Long userTypeId) {
+		
+		return convertRelationToRelationDto(
+				relationRepository.findByCompanyId_idAndUserId_UserTypeId_id(companyId, userTypeId));
 	}
 
 	
@@ -59,9 +61,9 @@ public class CompanyUserRelationService {
 	}
 
 	
-	public CompanyUserRelationDto getRelationByUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public CompanyUserRelation getRelationByUser(User user) {
+		
+		return relationRepository.findByUserId_id(user.getId());
 	}
 
 	

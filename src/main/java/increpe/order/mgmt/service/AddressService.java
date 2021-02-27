@@ -1,5 +1,7 @@
 package increpe.order.mgmt.service;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +28,7 @@ public class AddressService{
 	AddressTypeService addressTypeService;
 
 	
-	public Address createAddress(AddressDto addressDto) {
+	public AddressDto createAddress(AddressDto addressDto) {
 
 		Address address = convertAddressDtoToAddress(addressDto);
 
@@ -39,7 +41,7 @@ public class AddressService{
 
 		address.setCityId(cityId);
 
-		return addressRepository.save(address);
+		return convertAddressToAddressDto(addressRepository.save(address));
 	}
 
 	
@@ -48,13 +50,29 @@ public class AddressService{
 		AddressType addressTypeId = addressTypeService
 				.getAddressTypeByName(address.getAddressTypeId().getAddressTypeName());
 
-		City cityId = cityService.getCityByName(address.getCityId().getCityName());
+		City cityId = cityService.getCityByName(address.getCityId().getCityCode());
 
 		address.setAddressTypeId(addressTypeId);
 
 		address.setCityId(cityId);
 
 		return addressRepository.save(address);
+	}
+	
+	public AddressDto updateAddress(AddressDto addressDto) {
+		
+		if(Objects.isNull(addressDto.getId())) {
+			return createAddress(addressDto);
+		}
+		
+		Address address = convertAddressDtoToAddress(addressDto);
+		
+		return convertAddressToAddressDto(addressRepository.save(address));
+	}
+	
+	public AddressDto getAddressByUserId(Long id) {
+		
+		return convertAddressToAddressDto(addressRepository.findByUserId_id(id));
 	}
 
 	

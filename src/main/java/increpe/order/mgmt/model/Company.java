@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Entity(name = "company")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class Company extends Base{
+public class Company{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "company_seq")

@@ -25,8 +25,8 @@ public class CompanyTypeService {
 	}
 
 	
-	public CompanyTypeDto getCompanyType(Long id) {
-		return convertToCompanyTypeDto(companyTypeRepository.findById(id).get());
+	public CompanyType getCompanyType(Long id) {
+		return companyTypeRepository.findById(id).get();
 	}
 
 	

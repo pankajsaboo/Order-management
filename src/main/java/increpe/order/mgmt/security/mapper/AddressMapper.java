@@ -20,7 +20,6 @@ public interface AddressMapper {
 
 	AddressMapper INSTANCE = Mappers.getMapper(AddressMapper.class);
 	
-	
 	@Mappings({
 		@Mapping(source = "city", target = "cityId"),
 		@Mapping(source = "addressType", target = "addressTypeId")
@@ -48,20 +47,4 @@ public interface AddressMapper {
 	Country convertToCountry(CountryDto countryDto);
 	
 	CountryDto convertToCountryDto(Country country);
-	
-//	@AfterMapping
-//	default void convertToCompanyDto(Address address, @MappingTarget AddressDto addressDto) {
-//		
-//		addressDto.setCompanyId(CompanyMapper.INSTANCE.convertToCompanyDto(address.getCompanyId()));
-//		
-//		addressDto.setUserId(UserMapper.INSTANCE.convertToAuthenticatedUserDto(address.getUserId()));
-//	}
-//	
-//	@AfterMapping
-//	default void convertToCompany(AddressDto addressDto, @MappingTarget Address address) {
-//		
-//		address.setCompanyId(CompanyMapper.INSTANCE.convertToCompany(addressDto.getCompanyId()));
-//		
-//		address.setUserId(UserMapper.INSTANCE.convertToUser(addressDto.getUserId()));
-//	}
 }

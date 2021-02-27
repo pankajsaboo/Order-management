@@ -1,6 +1,7 @@
 package increpe.order.mgmt.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,30 +32,24 @@ public class CompanyTypeRelationService {
 		
 		CompanyTypeRelation relation = convertRelationDtoToRelation(companyTypeRelationDto);
 
-		CompanyType companyType = companyTypeService
-				.getCompanyTypeByName(relation.getCompanyTypeId().getCompanyTypeName());
-
-		Company company = companyService.getCompanyByName(relation.getCompanyId().getCompanyName());
-
-		// For case where single company exists as Trader as well as Buyer
-		if (company == null) {
-			company = companyService.createCompany(relation.getCompanyId());
+		CompanyType companyType = companyTypeService.getCompanyType(relation.getCompanyTypeId().getId());
+		
+		if(Objects.isNull(relation.getCompanyId().getId())) {
+			
+			Company company = companyService.createCompany(relation.getCompanyId());
+			
+			relation.setCompanyId(company);
+			relation.setCompanyTypeId(companyType);	
+		}else {
+			
+			Company company = companyService.getCompany(relation.getCompanyId().getId());
+			
+			relation.setCompanyId(company);
+			relation.setCompanyTypeId(companyType);
 		}
-
-		relation.setCompanyId(company);
-
-		relation.setCompanyTypeId(companyType);
 		
 		return companyTypeRelationRepository.save(relation);
 	}
-	
-
-	
-	public CompanyTypeRelationDto createCompanyToCompanyTypeRelation(CompanyTypeRelationDto companyTypeRelationDto) {
-		
-		return convertRelationToRelationDto(createRelation(companyTypeRelationDto));
-	}
-
 	
 	public CompanyTypeRelationDto getRelation(Long id) {
 

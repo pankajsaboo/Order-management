@@ -1,5 +1,6 @@
 package increpe.order.mgmt.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Entity(name = "company_type_relation")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class CompanyTypeRelation extends Base{
+public class CompanyTypeRelation{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "company_type_relation_seq")

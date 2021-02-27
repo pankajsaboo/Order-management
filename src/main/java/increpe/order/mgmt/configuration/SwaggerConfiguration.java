@@ -21,11 +21,6 @@ import static increpe.order.mgmt.utils.ProjectConstants.PROJECT_BASE_PACKAGE;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * 
- *
- * 
- */
 @Configuration
 @EnableSwagger2
 @PropertySource(value = "classpath:swagger-information.properties")

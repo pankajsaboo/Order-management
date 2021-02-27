@@ -25,8 +25,8 @@ public class UserTypeService {
 	}
 
 	
-	public UserTypeDto getUserType(Long id) {
-		return convertToUserTypeDto(userTypeRepository.findById(id).get());
+	public UserType getUserType(Long id) {
+		return userTypeRepository.findById(id).get();
 	}
 
 	

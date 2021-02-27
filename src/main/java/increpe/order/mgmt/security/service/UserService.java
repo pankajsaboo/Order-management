@@ -50,15 +50,22 @@ public class UserService {
 		
 		User user = convertUserDtoToUser(userDto);
 
-		UserType userTypeId = userTypeService.getUserTypeByName(user.getUserTypeId().getUserTypeName());
+		UserType userTypeId = userTypeService.getUserType(user.getUserTypeId().getId());
 
-		Roles userRoleId = rolesService.getRolesByTitle(user.getUserRole().getTitle());
+		Roles userRoleId = rolesService.getRoles(user.getUserRole().getId());
 
 		user.setUserTypeId(userTypeId);
 
 		user.setUserRole(userRoleId);
 
 		return userRepository.save(user);
+	}
+	
+	public AuthenticatedUserDto updateUserData(AuthenticatedUserDto userDto) {
+		
+		User user = convertUserDtoToUser(userDto);
+		
+		return convertUserToUserDto(userRepository.save(user));
 	}
 
 	

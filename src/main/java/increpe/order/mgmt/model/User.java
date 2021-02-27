@@ -34,19 +34,15 @@ public class User {
 	@NonNull
 	String password;
 	
-	@Column(name = "designation")
-	String designation;
-	
-	@Column(name = "employee_id")
-	String employeeId;
-	
 	@OneToOne
 	@JoinColumn(name = "user_type_id")
 	UserType userTypeId;
 	
-	@NonNull
 	@OneToOne
 	@JoinColumn(name = "roles_id")
 	Roles userRole;
+	
+	@Column(name = "profile_picture", columnDefinition = "TEXT")
+	String profilePicture;
 	
 }

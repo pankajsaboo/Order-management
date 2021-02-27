@@ -31,17 +31,17 @@ public class RegistrationController {
 	@PostMapping("/customer")
 	public ResponseEntity<RegistrationResponse> registerCustomer(@RequestBody RegistrationRequest registrationRequest) {
 
-		final RegistrationResponse registrationResponse = registrationService.registerCustomer(registrationRequest);
+		final RegistrationResponse registrationResponse = registrationService.register(registrationRequest);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(registrationResponse);
 	}
 	
-	@PostMapping("/trader")
-	public ResponseEntity<RegistrationResponse> registerBuyer(@RequestBody RegistrationRequest registrationRequest) {
-
-		final RegistrationResponse registrationResponse = registrationService.registerBuyer(registrationRequest);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(registrationResponse);
-	}
+//	@PostMapping("/trader")
+//	public ResponseEntity<RegistrationResponse> registerBuyer(@RequestBody RegistrationRequest registrationRequest) {
+//
+//		final RegistrationResponse registrationResponse = registrationService.registerBuyer(registrationRequest);
+//
+//		return ResponseEntity.status(HttpStatus.CREATED).body(registrationResponse);
+//	}
 
 }
