@@ -22,7 +22,7 @@ import lombok.experimental.FieldDefaults;
 public class ApiRolesRelation {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "api_roles_relation_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "api_roles_relation_seq")
 	@SequenceGenerator(name = "API_ROLES_RELATION_SEQ", sequenceName = "api_roles_relation_seq")
 	Long id;
 	

@@ -13,6 +13,7 @@ import increpe.order.mgmt.model.CompanyUserRelation;
 import increpe.order.mgmt.model.SellerBuyerRelation;
 import increpe.order.mgmt.model.SalesPersonWorkAreaRelation;
 import increpe.order.mgmt.repository.SellerBuyerRelationRepository;
+import increpe.order.mgmt.repository.ExpensesSummary;
 import increpe.order.mgmt.repository.SalesPersonWorkAreaRelationRepository;
 import increpe.order.mgmt.security.dto.AddressDto;
 import increpe.order.mgmt.security.dto.AuthenticatedUserDto;
@@ -21,6 +22,7 @@ import increpe.order.mgmt.security.dto.CompanyTypeRelationDto;
 import increpe.order.mgmt.security.dto.CompanyUserRelationDto;
 import increpe.order.mgmt.security.dto.CustomerDto;
 import increpe.order.mgmt.security.dto.EmailsDto;
+import increpe.order.mgmt.security.dto.ExpenseReportDto;
 import increpe.order.mgmt.security.dto.PhonesDto;
 import increpe.order.mgmt.security.dto.ProductMasterDto;
 import increpe.order.mgmt.security.dto.RegistrationRequest;
@@ -29,6 +31,7 @@ import increpe.order.mgmt.security.dto.SalesPersonDto;
 import increpe.order.mgmt.security.mapper.UserMapper;
 import increpe.order.mgmt.security.service.UserService;
 import increpe.order.mgmt.security.utils.SecurityConstants;
+import increpe.order.mgmt.sp.dto.ExpensesDto;
 
 @Service
 public class TraderService {
@@ -65,6 +68,9 @@ public class TraderService {
 
 	@Autowired
 	CompanyUserRelationService companyUserRelationService;
+	
+	@Autowired
+	ExpensesService expenseService;
 
 	public RegistrationResponse createNewCustomer(RegistrationRequest request) {
 
@@ -163,6 +169,29 @@ public class TraderService {
 		}
 
 		return customerCompanyList;
+	}
+	
+	public List<ExpenseReportDto> getExpenseReportByCompanyId(Long companyId) {
+		
+		List<ExpenseReportDto> reportList = new ArrayList<>();
+		
+		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
+		
+		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
+			
+			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
+			
+			List<ExpensesSummary> summaryList = expenseService.getExpenseSummary(salesPersonDto.getId());
+			
+			if(summaryList.size() > 0) {
+				
+				summaryList.forEach((element) ->{
+					reportList.add(new ExpenseReportDto(salesPersonDto, element.getMonthYear(), element.getMonthlySummary()));
+				});
+			}
+		}
+		
+		return reportList;
 	}
 
 	private void getIfExist(CustomerDto customerDto) {

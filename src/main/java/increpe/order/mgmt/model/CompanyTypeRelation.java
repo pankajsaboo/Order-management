@@ -21,7 +21,7 @@ import lombok.experimental.FieldDefaults;
 public class CompanyTypeRelation{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "company_type_relation_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "company_type_relation_seq")
 	@SequenceGenerator(name = "COMPANY_TYPE_RELATION_SEQ", sequenceName = "company_type_relation_seq")
 	Long id;
 	

@@ -19,7 +19,7 @@ import lombok.experimental.FieldDefaults;
 public class SellerBuyerRelation{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seller_buyer_relation_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seller_buyer_relation_seq")
 	@SequenceGenerator(name = "SELLER_BUYER_RELATION_SEQ", sequenceName = "seller_buyer_relation_seq")
 	Long id;
 	

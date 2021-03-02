@@ -18,7 +18,7 @@ import lombok.experimental.FieldDefaults;
 public class RolesPermissionRelation {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "roles_permission_relation_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "roles_permission_relation_seq")
 	@SequenceGenerator(name = "ROLES_PERMISSION_RELATION_SEQ", sequenceName = "roles_permission_relation_seq")
 	Long id;
 	

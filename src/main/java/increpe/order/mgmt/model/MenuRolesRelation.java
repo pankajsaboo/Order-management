@@ -19,7 +19,7 @@ import lombok.experimental.FieldDefaults;
 public class MenuRolesRelation{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "menu_roles_relation_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "menu_roles_relation_seq")
 	@SequenceGenerator(name = "MENU_ROLES_RELATION_SEQ", sequenceName = "menu_roles_relation_seq")
 	Long id;
 	

@@ -25,7 +25,7 @@ import lombok.experimental.FieldDefaults;
 public class SalesPerson {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "sales_person_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sales_person_seq")
 	@SequenceGenerator(name = "SALES_PERSON_SEQ", sequenceName = "sales_person_seq")
 	Long id;
 	

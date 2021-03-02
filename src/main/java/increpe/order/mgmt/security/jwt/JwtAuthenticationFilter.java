@@ -3,6 +3,7 @@ package increpe.order.mgmt.security.jwt;
 import static increpe.order.mgmt.security.utils.SecurityConstants.HEADER_STRING;
 import static increpe.order.mgmt.security.utils.SecurityConstants.LOGIN_REQUEST_URI;
 import static increpe.order.mgmt.security.utils.SecurityConstants.REGISTRATION_REQUEST_URI;
+import static increpe.order.mgmt.security.utils.SecurityConstants.SUPER_ADMIN_URI;
 import static increpe.order.mgmt.security.utils.SecurityConstants.TOKEN_PREFIX;
 
 import java.io.IOException;
@@ -52,10 +53,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		final String requestURI = req.getRequestURI();
 
-		if (requestURI.contains(LOGIN_REQUEST_URI) || requestURI.contains(REGISTRATION_REQUEST_URI)) {
+		if (requestURI.contains(LOGIN_REQUEST_URI) || 
+				requestURI.contains(REGISTRATION_REQUEST_URI) || requestURI.contains(SUPER_ADMIN_URI)) {
 			chain.doFilter(req, res);
 			return;
 		}
+		
 
 		final String header = req.getHeader(HEADER_STRING);
 		String username = null;

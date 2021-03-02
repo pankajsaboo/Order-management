@@ -41,7 +41,7 @@ public class ExpensesService {
 		
 		int year = Integer.parseInt(monthYear.split("-")[1].trim());
 		
-		Month month = Month.valueOf(monthYear.split("-")[0].trim());
+		Month month = Month.valueOf(monthYear.split("-")[0].trim().toUpperCase());
 		
 		LocalDate startDate = LocalDate.of(year,month,1);
 		

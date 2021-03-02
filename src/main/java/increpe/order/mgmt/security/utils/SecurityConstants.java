@@ -49,6 +49,8 @@ public class SecurityConstants {
 	public static final String LOGIN_REQUEST_URI = "/login";
 
 	public static final String REGISTRATION_REQUEST_URI = "/register";
+	
+	public static final String SUPER_ADMIN_URI ="/sa";
 
 	private SecurityConstants() {
 

@@ -24,7 +24,7 @@ import lombok.experimental.FieldDefaults;
 public class SalesPersonWorkAreaRelation {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "sales_person_work_area_relation_seq")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sales_person_work_area_relation_seq")
 	@SequenceGenerator(name = "SALES_PERSON_WORK_AREA_RELATION_SEQ", sequenceName = "sales_person_area_relation_seq")
 	Long id;
 	

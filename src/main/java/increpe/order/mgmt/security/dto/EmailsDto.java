@@ -26,4 +26,7 @@ public class EmailsDto {
 	
 	@JsonProperty(value = "user")
 	AuthenticatedUserDto userId;
+	
+	@JsonProperty(value = "status")
+	String status;
 }

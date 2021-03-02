@@ -18,6 +18,7 @@ import increpe.order.mgmt.model.SalesPerson;
 import increpe.order.mgmt.security.dto.CompanyProductDto;
 import increpe.order.mgmt.security.dto.CustomerDto;
 import increpe.order.mgmt.security.dto.CustomerSalesPersonRelationDto;
+import increpe.order.mgmt.security.dto.ExpenseReportDto;
 import increpe.order.mgmt.security.dto.ProductMasterDto;
 import increpe.order.mgmt.security.dto.RegistrationRequest;
 import increpe.order.mgmt.security.dto.RegistrationResponse;
@@ -26,12 +27,14 @@ import increpe.order.mgmt.security.dto.WorkAreaMasterDto;
 import increpe.order.mgmt.service.ActivityService;
 import increpe.order.mgmt.service.CompanyProductRelationService;
 import increpe.order.mgmt.service.CustomerService;
+import increpe.order.mgmt.service.ExpensesService;
 import increpe.order.mgmt.service.ProductService;
 import increpe.order.mgmt.service.RegistrationService;
 import increpe.order.mgmt.service.SalesPersonService;
 import increpe.order.mgmt.service.TraderService;
 import increpe.order.mgmt.service.WorkAreaMasterService;
 import increpe.order.mgmt.sp.dto.ActivityMasterDto;
+import increpe.order.mgmt.sp.dto.ExpensesDto;
 
 @CrossOrigin
 @RestController
@@ -61,6 +64,9 @@ public class TraderController {
 
 	@Autowired
 	ActivityService activityService;
+	
+	@Autowired
+	ExpensesService expenseService;
 
 	@PostMapping("/employee/add")
 	public ResponseEntity<RegistrationResponse> addNewSalesPersonAccont(@RequestBody SalesPersonDto request) {
@@ -164,6 +170,13 @@ public class TraderController {
 
 		return ResponseEntity.ok(customerService.mapSalesPersonsToCustomer(relationList));
 	}
+	
+	@PutMapping("/customer/sp/update")
+	public ResponseEntity<RegistrationResponse> updateCustomerSalesPersonMapping(
+			@RequestBody List<CustomerSalesPersonRelationDto> relationList) {
+
+		return ResponseEntity.ok(customerService.updateRelationForCustomer(relationList));
+	}
 
 	@GetMapping("/sales-person/sp")
 	public ResponseEntity<List<CustomerSalesPersonRelationDto>> getCustomerSalesPersonRelationListBySalesPersonId(
@@ -193,8 +206,33 @@ public class TraderController {
 
 	@PostMapping("/activity-master/add")
 	public ResponseEntity<RegistrationResponse> addNewActivityMasterList(
-			@RequestBody List<ActivityMasterDto> masterDtoList) {
+			@RequestBody ActivityMasterDto masterDto) {
 
-		return ResponseEntity.ok(activityService.createAllMasters(masterDtoList));
+		return ResponseEntity.ok(activityService.createActivityMaster(masterDto));
+	}
+	
+	@GetMapping("/activity-master")
+	public ResponseEntity<List<ActivityMasterDto>> getAllActivityMasters(@RequestParam Long id){
+		
+		return ResponseEntity.ok(activityService.getAllActivityMastersForCompany(id));
+	}
+	
+	@PutMapping("/activity-master/update")
+	public ResponseEntity<RegistrationResponse> updateActivityMaster(
+			@RequestBody ActivityMasterDto masterDto) {
+
+		return ResponseEntity.ok(activityService.updateActivityMaster(masterDto));
+	}
+	
+	@GetMapping("/reports/expense")
+	public ResponseEntity<List<ExpenseReportDto>> getExpenseReportSummaryFormCompany(@RequestParam Long id){
+		return ResponseEntity.ok(traderService.getExpenseReportByCompanyId(id));
+	}
+	
+	@GetMapping("/reports/expense/detail")
+	public ResponseEntity<List<ExpensesDto>> getExpenseBetween(@RequestParam(name = "mY") String monthYear,
+			@RequestParam(name = "uId") Long id) {
+
+		return ResponseEntity.ok(expenseService.getExpensesForMonth(monthYear, id));
 	}
 }

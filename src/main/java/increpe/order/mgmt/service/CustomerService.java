@@ -100,17 +100,18 @@ public class CustomerService {
 	public List<CustomerSalesPersonRelationDto> getAllByCustomerCompany(Long customerCompanyId) {
 
 		return CompanyMapper.INSTANCE
-				.convertToCustomerSalesPersonRelationDtoList(relationRepository.findByCustomerCompanyId_id(customerCompanyId));
+				.convertToCustomerSalesPersonRelationDtoList(
+						relationRepository.findByCustomerCompanyId_idAndStatus(customerCompanyId,"ACTIVE"));
 	}
 	
 	@Transactional
 	public RegistrationResponse updateRelationForCustomer(List<CustomerSalesPersonRelationDto> relationDtoList) {
 		
-		CompanyDto customerDto = relationDtoList.get(0).getCustomerCompanyId();
+		//CompanyDto customerDto = relationDtoList.get(0).getCustomerCompanyId();
 		
-		Company customerCompanyId = companyService.convertToCompany(customerDto);
+		//Company customerCompanyId = companyService.convertToCompany(customerDto);
 		
-		relationRepository.deleteByCustomerCompanyId(customerCompanyId);
+		//relationRepository.deleteByCustomerCompanyId(customerCompanyId);
 		
 		mapSalesPersonsToCustomer(relationDtoList);
 		
