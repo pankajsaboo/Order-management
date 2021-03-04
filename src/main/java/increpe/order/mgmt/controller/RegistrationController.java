@@ -28,7 +28,7 @@ public class RegistrationController {
 	@Autowired
 	RegistrationService registrationService;
 
-	@PostMapping("/customer")
+	@PostMapping("")
 	public ResponseEntity<RegistrationResponse> registerCustomer(@RequestBody RegistrationRequest registrationRequest) {
 
 		final RegistrationResponse registrationResponse = registrationService.register(registrationRequest);
