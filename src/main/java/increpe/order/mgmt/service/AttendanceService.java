@@ -29,9 +29,9 @@ public class AttendanceService {
 
 	public List<AttendanceDto> getAttendanceByMonth(String monthYear, Long salesPersonId) {
 		
-		int year = Integer.parseInt(monthYear.split(" ")[1]);
+		int year = Integer.parseInt(monthYear.split(" ")[1].trim());
 		
-		Month month = Month.valueOf(monthYear.split(" ")[0]);
+		Month month = Month.valueOf(monthYear.split(" ")[0].trim().toUpperCase());
 		
 		LocalDate startDate = LocalDate.of(year,month,1);
 		
@@ -40,5 +40,21 @@ public class AttendanceService {
 		return CompanyMapper.INSTANCE.convertToAttendanceDtoList(
 					attendanceRepository.findBySalesPersonId_idAndStartTimeBetween(salesPersonId, 
 									LocalDateTime.of(startDate, LocalTime.MIN), LocalDateTime.of(endDate, LocalTime.MAX)));
+	}
+	
+	public AttendanceDto getDailyAttendanceBySalesPerson(String date, Long salesPersonId) {
+		
+		LocalDateTime startDateTime = LocalDateTime.of(LocalDate.parse(date), LocalTime.of(0, 0));
+		
+		LocalDateTime endDateTime = LocalDateTime.of(LocalDate.parse(date), LocalTime.of(23, 59));
+		
+		List<AttendanceDto> dtoList = CompanyMapper.INSTANCE.convertToAttendanceDtoList(
+				attendanceRepository.findBySalesPersonId_idAndStartTimeBetween(salesPersonId, startDateTime, endDateTime));
+		
+		if(dtoList.size() > 0) {
+			return dtoList.get(0);
+		}
+		
+		return null;
 	}
 }

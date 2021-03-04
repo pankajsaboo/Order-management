@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import increpe.order.mgmt.model.SalesPerson;
+import increpe.order.mgmt.security.dto.AttendanceReportDto;
 import increpe.order.mgmt.security.dto.CompanyProductDto;
 import increpe.order.mgmt.security.dto.CustomerDto;
 import increpe.order.mgmt.security.dto.CustomerSalesPersonRelationDto;
@@ -25,6 +26,7 @@ import increpe.order.mgmt.security.dto.RegistrationResponse;
 import increpe.order.mgmt.security.dto.SalesPersonDto;
 import increpe.order.mgmt.security.dto.WorkAreaMasterDto;
 import increpe.order.mgmt.service.ActivityService;
+import increpe.order.mgmt.service.AttendanceService;
 import increpe.order.mgmt.service.CompanyProductRelationService;
 import increpe.order.mgmt.service.CustomerService;
 import increpe.order.mgmt.service.ExpensesService;
@@ -33,8 +35,12 @@ import increpe.order.mgmt.service.RegistrationService;
 import increpe.order.mgmt.service.SalesPersonService;
 import increpe.order.mgmt.service.TraderService;
 import increpe.order.mgmt.service.WorkAreaMasterService;
+import increpe.order.mgmt.sp.dto.ActivityDto;
 import increpe.order.mgmt.sp.dto.ActivityMasterDto;
+import increpe.order.mgmt.sp.dto.AttendanceDto;
 import increpe.order.mgmt.sp.dto.ExpensesDto;
+import increpe.order.mgmt.sp.dto.TourDto;
+import increpe.order.mgmt.sp.dto.VisitsDto;
 
 @CrossOrigin
 @RestController
@@ -67,6 +73,9 @@ public class TraderController {
 	
 	@Autowired
 	ExpensesService expenseService;
+	
+	@Autowired
+	AttendanceService attendanceService;
 
 	@PostMapping("/employee/add")
 	public ResponseEntity<RegistrationResponse> addNewSalesPersonAccont(@RequestBody SalesPersonDto request) {
@@ -225,7 +234,7 @@ public class TraderController {
 	}
 	
 	@GetMapping("/reports/expense")
-	public ResponseEntity<List<ExpenseReportDto>> getExpenseReportSummaryFormCompany(@RequestParam Long id){
+	public ResponseEntity<List<ExpenseReportDto>> getExpenseReportSummaryForCompany(@RequestParam Long id){
 		return ResponseEntity.ok(traderService.getExpenseReportByCompanyId(id));
 	}
 	
@@ -234,5 +243,39 @@ public class TraderController {
 			@RequestParam(name = "uId") Long id) {
 
 		return ResponseEntity.ok(expenseService.getExpensesForMonth(monthYear, id));
+	}
+	
+	@GetMapping("/reports/attendance")
+	public ResponseEntity<List<AttendanceReportDto>> getAttendanceReportSummaryForCompany(
+			@RequestParam(name = "mY") String monthYear, @RequestParam Long id){
+		return ResponseEntity.ok(traderService.getAttendanceReportForCompanyByMonthYear(id, monthYear));
+	}
+	
+	@GetMapping("/reports/attendance/daily")
+	public ResponseEntity<List<AttendanceDto>> getDailyAttendance(@RequestParam(name = "d") String date,
+			@RequestParam Long id) {
+
+		return ResponseEntity.ok(traderService.getDailyAttendanceByCompanyId(id, date));
+	}
+	
+	@GetMapping("/reports/attendance/user")
+	public ResponseEntity<List<AttendanceDto>> getMonthlyAttendanceByUserId(@RequestParam(name = "mY") String monthYear,
+			@RequestParam(name = "uId") Long id) {
+		return ResponseEntity.ok(attendanceService.getAttendanceByMonth(monthYear, id));
+	}
+	
+	@GetMapping("/reports/activity")
+	public ResponseEntity<List<ActivityDto>> getActivityReportsForCompany(@RequestParam Long id){
+		return ResponseEntity.ok(traderService.getActivityReports(id));
+	}
+	
+	@GetMapping("/reports/visits")
+	public ResponseEntity<List<VisitsDto>> getVisitReportsForCompany(@RequestParam Long id){
+		return ResponseEntity.ok(traderService.getVisitReports(id));
+	}
+	
+	@GetMapping("/reports/tour")
+	public ResponseEntity<List<TourDto>> getTourReportsForCompany(@RequestParam Long id){
+		return ResponseEntity.ok(traderService.getTourReports(id));
 	}
 }

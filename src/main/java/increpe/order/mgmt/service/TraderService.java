@@ -16,6 +16,7 @@ import increpe.order.mgmt.repository.SellerBuyerRelationRepository;
 import increpe.order.mgmt.repository.ExpensesSummary;
 import increpe.order.mgmt.repository.SalesPersonWorkAreaRelationRepository;
 import increpe.order.mgmt.security.dto.AddressDto;
+import increpe.order.mgmt.security.dto.AttendanceReportDto;
 import increpe.order.mgmt.security.dto.AuthenticatedUserDto;
 import increpe.order.mgmt.security.dto.CompanyDto;
 import increpe.order.mgmt.security.dto.CompanyTypeRelationDto;
@@ -31,7 +32,11 @@ import increpe.order.mgmt.security.dto.SalesPersonDto;
 import increpe.order.mgmt.security.mapper.UserMapper;
 import increpe.order.mgmt.security.service.UserService;
 import increpe.order.mgmt.security.utils.SecurityConstants;
+import increpe.order.mgmt.sp.dto.ActivityDto;
+import increpe.order.mgmt.sp.dto.AttendanceDto;
 import increpe.order.mgmt.sp.dto.ExpensesDto;
+import increpe.order.mgmt.sp.dto.TourDto;
+import increpe.order.mgmt.sp.dto.VisitsDto;
 
 @Service
 public class TraderService {
@@ -68,9 +73,21 @@ public class TraderService {
 
 	@Autowired
 	CompanyUserRelationService companyUserRelationService;
-	
+
 	@Autowired
 	ExpensesService expenseService;
+
+	@Autowired
+	AttendanceService attendanceService;
+
+	@Autowired
+	ActivityService activityService;
+	
+	@Autowired
+	VisitsService visitService;
+	
+	@Autowired
+	TourService tourService;
 
 	public RegistrationResponse createNewCustomer(RegistrationRequest request) {
 
@@ -112,7 +129,7 @@ public class TraderService {
 	}
 
 	public List<SalesPersonDto> getAllSalesPersonByCompanyId(Long id) {
-		
+
 		List<Long> userIdList = getAllUserIdByCompanyId(id);
 
 		List<SalesPersonDto> salesPersonDtoList = salesPersonService.getAllByCompany(userIdList);
@@ -138,7 +155,7 @@ public class TraderService {
 
 			userIdList.add(companyUserRelationDto.getUserId().getId());
 		}
-		
+
 		return userIdList;
 
 	}
@@ -170,28 +187,133 @@ public class TraderService {
 
 		return customerCompanyList;
 	}
-	
+
 	public List<ExpenseReportDto> getExpenseReportByCompanyId(Long companyId) {
-		
+
 		List<ExpenseReportDto> reportList = new ArrayList<>();
-		
+
 		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
-		
+
 		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
-			
+
 			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
-			
+
 			List<ExpensesSummary> summaryList = expenseService.getExpenseSummary(salesPersonDto.getId());
-			
-			if(summaryList.size() > 0) {
-				
-				summaryList.forEach((element) ->{
-					reportList.add(new ExpenseReportDto(salesPersonDto, element.getMonthYear(), element.getMonthlySummary()));
+
+			if (summaryList.size() > 0) {
+
+				summaryList.forEach((element) -> {
+					reportList.add(
+							new ExpenseReportDto(salesPersonDto, element.getMonthYear(), element.getMonthlySummary()));
 				});
 			}
 		}
-		
+
 		return reportList;
+	}
+
+	public List<AttendanceReportDto> getAttendanceReportForCompanyByMonthYear(Long companyId, String monthYear) {
+
+		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
+
+		List<AttendanceReportDto> reportList = new ArrayList<>();
+
+		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
+
+			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
+
+			List<AttendanceDto> attendanceList = attendanceService.getAttendanceByMonth(monthYear,
+					salesPersonDto.getId());
+
+			if (attendanceList.size() > 0) {
+				reportList.add(new AttendanceReportDto(salesPersonDto, attendanceList));
+			}
+		}
+
+		return reportList;
+	}
+
+	public List<AttendanceDto> getDailyAttendanceByCompanyId(Long companyId, String date) {
+
+		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
+
+		List<AttendanceDto> dailyAttendanceList = new ArrayList<>();
+
+		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
+
+			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
+
+			AttendanceDto dto = attendanceService.getDailyAttendanceBySalesPerson(date, salesPersonDto.getId());
+
+			if (Objects.nonNull(dto)) {
+				dailyAttendanceList.add(dto);
+			}
+		}
+
+		return dailyAttendanceList;
+	}
+
+	public List<ActivityDto> getActivityReports(Long companyId) {
+
+		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
+
+		List<ActivityDto> activityReportList = new ArrayList<>();
+
+		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
+
+			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
+
+			List<ActivityDto> dtoList = activityService.getAllActivitiesForSalesPerson(salesPersonDto.getId());
+			
+			if(dtoList.size() > 0) {
+				activityReportList.addAll(dtoList);
+			}
+		}
+		
+		return activityReportList;
+
+	}
+	
+	public List<VisitsDto> getVisitReports(Long companyId) {
+
+		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
+
+		List<VisitsDto> visitReportList = new ArrayList<>();
+
+		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
+
+			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
+
+			List<VisitsDto> dtoList = visitService.getAllVisitsForSalesPerson(salesPersonDto.getId());
+			
+			if(dtoList.size() > 0) {
+				visitReportList.addAll(dtoList);
+			}
+		}
+		
+		return visitReportList;
+
+	}
+	
+	public List<TourDto> getTourReports(Long companyId) {
+
+		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
+
+		List<TourDto> tourReportList = new ArrayList<>();
+
+		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
+
+			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
+
+			List<TourDto> dtoList = tourService.getTourListBySalesPersonId(salesPersonDto.getId());
+			
+			if(dtoList.size() > 0) {
+				tourReportList.addAll(dtoList);
+			}
+		}
+		
+		return tourReportList;
+
 	}
 
 	private void getIfExist(CustomerDto customerDto) {
