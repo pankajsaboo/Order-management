@@ -1,6 +1,7 @@
 package increpe.order.mgmt.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -9,6 +10,8 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,16 +34,19 @@ import increpe.order.mgmt.security.dto.WorkAreaMasterDto;
 import increpe.order.mgmt.security.mapper.CompanyMapper;
 import increpe.order.mgmt.security.service.UserService;
 import increpe.order.mgmt.security.utils.SecurityConstants;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 public class SalesPersonService {
+
+	Logger log = LoggerFactory.getLogger(SalesPersonService.class);
 
 	@Autowired
 	SalesPersonRepository salesPersonRepository;
 
 	@Autowired
 	SalesPersonWorkAreaRelationRepository relationRepository;
-	
+
 	@Autowired
 	CompanyUserRelationService companyUserRelationService;
 
@@ -58,7 +64,7 @@ public class SalesPersonService {
 
 	@Autowired
 	CompanyService companyService;
-	
+
 	@Autowired
 	TraderService traderService;
 
@@ -91,33 +97,40 @@ public class SalesPersonService {
 		List<SalesPersonWorkAreaRelation> relationList = relationRepository.findBySalesPersonId_UserId_id(id);
 
 		SalesPerson salesPerson = new SalesPerson();
-		
+
 		SalesPersonDto spDto = new SalesPersonDto();
 
-		if (relationList.isEmpty()) {
-			
-			salesPerson = salesPersonRepository.findByUserId_id(id);
-			spDto = CompanyMapper.INSTANCE.convertToSalesPersonDto(salesPerson);
-			
-		} else {
+		try {
 
-			salesPerson = relationList.get(0).getSalesPersonId();
+			if (relationList.isEmpty()) {
 
-			List<WorkAreaMaster> workAreaList = new ArrayList<>();
+				salesPerson = salesPersonRepository.findByUserId_id(id);
+				spDto = CompanyMapper.INSTANCE.convertToSalesPersonDto(salesPerson);
 
-			for (Iterator<SalesPersonWorkAreaRelation> iterator = relationList.iterator(); iterator.hasNext();) {
+			} else {
 
-				SalesPersonWorkAreaRelation salesPersonWorkAreaRelation = (SalesPersonWorkAreaRelation) iterator.next();
+				salesPerson = relationList.get(0).getSalesPersonId();
 
-				workAreaList.add(salesPersonWorkAreaRelation.getWorkAreaMasterId());
+				List<WorkAreaMaster> workAreaList = new ArrayList<>();
+
+				for (Iterator<SalesPersonWorkAreaRelation> iterator = relationList.iterator(); iterator.hasNext();) {
+
+					SalesPersonWorkAreaRelation salesPersonWorkAreaRelation = (SalesPersonWorkAreaRelation) iterator
+							.next();
+
+					workAreaList.add(salesPersonWorkAreaRelation.getWorkAreaMasterId());
+				}
+
+				spDto = CompanyMapper.INSTANCE.convertToSalesPersonDto(salesPerson);
+
+				List<WorkAreaMasterDto> workAreaDtoList = CompanyMapper.INSTANCE
+						.convertToWorkAreaMasterDtoList(workAreaList);
+
+				spDto.setWorkAreaMasterList(workAreaDtoList);
 			}
-
-			spDto = CompanyMapper.INSTANCE.convertToSalesPersonDto(salesPerson);
-
-			List<WorkAreaMasterDto> workAreaDtoList = CompanyMapper.INSTANCE
-					.convertToWorkAreaMasterDtoList(workAreaList);
-
-			spDto.setWorkAreaMasterList(workAreaDtoList);
+		} catch (Exception e) {
+			
+			log.info("exception: =======> "+Arrays.toString(e.getStackTrace()));
 		}
 
 		getIfExists(spDto);
@@ -125,24 +138,24 @@ public class SalesPersonService {
 		return spDto;
 
 	}
-	
+
 	public CustomerDto getCustomerDetailsForSalesPerson(Long customerId) {
-		
+
 		CompanyDto customerCompany = companyService.convertToCompanyDto(companyService.getCompany(customerId));
-		
-		AuthenticatedUserDto customerAdmin = companyUserRelationService
-				.getRelationByCompanyAndUserType(customerId, 2L).getUserId();
-		
+
+		AuthenticatedUserDto customerAdmin = companyUserRelationService.getRelationByCompanyAndUserType(customerId, 2L)
+				.getUserId();
+
 		PhonesDto pDto = phoneService.getPhoneByUserId(customerAdmin.getId());
 
 		EmailsDto eDto = emailService.getEmailByUserId(customerAdmin.getId());
 
 		AddressDto aDto = addressService.getAddressByUserId(customerAdmin.getId());
-		
+
 		CustomerDto customerDto = new CustomerDto();
-		
+
 		customerDto.setCompanyId(customerCompany);
-		
+
 		if (!Objects.isNull(pDto)) {
 			customerDto.setPhoneId(pDto);
 		}
@@ -154,7 +167,7 @@ public class SalesPersonService {
 		if (!Objects.isNull(aDto)) {
 			customerDto.setAddressId(aDto);
 		}
-		
+
 		return customerDto;
 	}
 
@@ -168,7 +181,8 @@ public class SalesPersonService {
 
 			SalesPersonWorkAreaRelation salesPersonWorkAreaRelation = (SalesPersonWorkAreaRelation) iterator.next();
 
-			SalesPersonDto dto = getSalesPersonByUserId(salesPersonWorkAreaRelation.getSalesPersonId().getUserId().getId());
+			SalesPersonDto dto = getSalesPersonByUserId(
+					salesPersonWorkAreaRelation.getSalesPersonId().getUserId().getId());
 
 			salesPersonDtoList.add(dto);
 		}
@@ -243,7 +257,7 @@ public class SalesPersonService {
 
 		// Optimization required here...
 
-		if(isTrader) {
+		if (isTrader) {
 			SalesPerson salesPerson = CompanyMapper.INSTANCE.convertToSalesPerson(salesPersonDto);
 
 			deleteSalesPerSonWorkAreaMappings(salesPerson);
