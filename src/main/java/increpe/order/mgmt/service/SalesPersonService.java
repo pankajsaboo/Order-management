@@ -96,7 +96,7 @@ public class SalesPersonService {
 
 		if (relationList.isEmpty()) {
 			
-			salesPerson = salesPersonRepository.findById(id).get();
+			salesPerson = salesPersonRepository.findByUserId_id(id);
 			spDto = CompanyMapper.INSTANCE.convertToSalesPersonDto(salesPerson);
 			
 		} else {

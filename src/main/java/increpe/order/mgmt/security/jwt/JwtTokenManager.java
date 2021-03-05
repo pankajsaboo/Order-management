@@ -38,7 +38,7 @@ public class JwtTokenManager {
 
 		final String username = user.getUsername();
 		final String userRole = user.getUserRole().getTitle();
-		//user.setProfilePicture(null);
+		user.setProfilePicture(null);
 		final Claims claims = Jwts.claims().setSubject(username);
 		claims.put("role", userRole);
 		claims.put("userId", user);
