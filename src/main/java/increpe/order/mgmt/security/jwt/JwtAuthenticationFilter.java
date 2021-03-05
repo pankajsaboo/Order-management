@@ -53,8 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		final String requestURI = req.getRequestURI();
 
-		if (requestURI.contains(LOGIN_REQUEST_URI) || 
-				requestURI.contains(REGISTRATION_REQUEST_URI) || requestURI.contains(SUPER_ADMIN_URI)) {
+		if (requestURI.contains(LOGIN_REQUEST_URI) || requestURI.contains(REGISTRATION_REQUEST_URI)) {
 			chain.doFilter(req, res);
 			return;
 		}
