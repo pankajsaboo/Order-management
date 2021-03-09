@@ -15,14 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import increpe.order.mgmt.model.SalesPerson;
+import increpe.order.mgmt.repository.WorkAreaMasterRepository;
 import increpe.order.mgmt.security.dto.AttendanceReportDto;
 import increpe.order.mgmt.security.dto.CompanyProductDto;
 import increpe.order.mgmt.security.dto.CustomerDto;
 import increpe.order.mgmt.security.dto.CustomerSalesPersonRelationDto;
 import increpe.order.mgmt.security.dto.ExpenseReportDto;
+import increpe.order.mgmt.security.dto.HolidayMasterDto;
 import increpe.order.mgmt.security.dto.ProductMasterDto;
 import increpe.order.mgmt.security.dto.RegistrationRequest;
 import increpe.order.mgmt.security.dto.RegistrationResponse;
+import increpe.order.mgmt.security.dto.RequestObject;
 import increpe.order.mgmt.security.dto.SalesPersonDto;
 import increpe.order.mgmt.security.dto.WorkAreaMasterDto;
 import increpe.order.mgmt.service.ActivityService;
@@ -76,6 +79,9 @@ public class TraderController {
 	
 	@Autowired
 	AttendanceService attendanceService;
+	
+	@Autowired
+	WorkAreaMasterService workMasterService;
 
 	@PostMapping("/employee/add")
 	public ResponseEntity<RegistrationResponse> addNewSalesPersonAccont(@RequestBody SalesPersonDto request) {
@@ -107,10 +113,10 @@ public class TraderController {
 		return ResponseEntity.ok(traderService.createNewProduct(productDto));
 	}
 
-	@GetMapping("/product")
-	public ResponseEntity<List<ProductMasterDto>> getAllProducts(@RequestParam Long id) {
+	@PostMapping("/product")
+	public ResponseEntity<List<ProductMasterDto>> getAllProducts(@RequestParam RequestObject req) {
 
-		return ResponseEntity.ok(productService.getAllProducts(id));
+		return ResponseEntity.ok(productService.getAllProducts(req.getId()));
 	}
 
 	@PutMapping("/product/update")
@@ -238,11 +244,10 @@ public class TraderController {
 		return ResponseEntity.ok(traderService.getExpenseReportByCompanyId(id));
 	}
 	
-	@GetMapping("/reports/expense/detail")
-	public ResponseEntity<List<ExpensesDto>> getExpenseBetween(@RequestParam(name = "mY") String monthYear,
-			@RequestParam(name = "uId") Long id) {
+	@PostMapping("/reports/expense/detail")
+	public ResponseEntity<Object> getExpenseBetween(@RequestBody RequestObject req) {
 
-		return ResponseEntity.ok(expenseService.getExpensesForMonth(monthYear, id));
+		return ResponseEntity.ok(expenseService.getExpensesForMonth(req.getMY(), req.getId()));
 	}
 	
 	@GetMapping("/reports/attendance")
@@ -264,9 +269,9 @@ public class TraderController {
 		return ResponseEntity.ok(attendanceService.getAttendanceByMonth(monthYear, id));
 	}
 	
-	@GetMapping("/reports/activity")
-	public ResponseEntity<List<ActivityDto>> getActivityReportsForCompany(@RequestParam Long id){
-		return ResponseEntity.ok(traderService.getActivityReports(id));
+	@PostMapping("/reports/activity")
+	public ResponseEntity<List<ActivityDto>> getActivityReportsForCompany(@RequestBody RequestObject req){
+		return ResponseEntity.ok(traderService.getActivityReports(req.getId()));
 	}
 	
 	@GetMapping("/reports/visits")
@@ -277,5 +282,15 @@ public class TraderController {
 	@GetMapping("/reports/tour")
 	public ResponseEntity<List<TourDto>> getTourReportsForCompany(@RequestParam Long id){
 		return ResponseEntity.ok(traderService.getTourReports(id));
+	}
+	
+	@PostMapping("/masters/holiday/add")
+	public ResponseEntity<HolidayMasterDto> addNewHolidayMaster(@RequestBody HolidayMasterDto masterDto){
+		return ResponseEntity.ok(workMasterService.createHolidayMaster(masterDto));
+	}
+	
+	@GetMapping("/masters/holiday")
+	public ResponseEntity<HolidayMasterDto> getHolidayMaster(@RequestParam("cId") Long id, @RequestParam("mY") String mY){
+		return ResponseEntity.ok(workMasterService.getHolidayMasterbyCompanyIdAndMonthYear(id, mY));
 	}
 }

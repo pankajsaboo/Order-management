@@ -23,6 +23,7 @@ import increpe.order.mgmt.model.CompanyUserRelation;
 import increpe.order.mgmt.model.CustomerSalesPersonRelation;
 import increpe.order.mgmt.model.Emails;
 import increpe.order.mgmt.model.Expenses;
+import increpe.order.mgmt.model.HolidayMaster;
 import increpe.order.mgmt.model.Order;
 import increpe.order.mgmt.model.OrderDetails;
 import increpe.order.mgmt.model.Phone;
@@ -37,6 +38,7 @@ import increpe.order.mgmt.security.dto.CompanyTypeRelationDto;
 import increpe.order.mgmt.security.dto.CompanyUserRelationDto;
 import increpe.order.mgmt.security.dto.CustomerSalesPersonRelationDto;
 import increpe.order.mgmt.security.dto.EmailsDto;
+import increpe.order.mgmt.security.dto.HolidayMasterDto;
 import increpe.order.mgmt.security.dto.OrderDetailsDto;
 import increpe.order.mgmt.security.dto.OrderDto;
 import increpe.order.mgmt.security.dto.PhonesDto;
@@ -181,6 +183,10 @@ public interface CompanyMapper {
 	List<ActivityMaster> convertToActivityMasterList(List<ActivityMasterDto> activityMasterDtoList);
 
 	List<ActivityMasterDto> convertToActivityMasterDtoList(List<ActivityMaster> activityMasterList);
+	
+	HolidayMasterDto convertToHolidayMasterDto(HolidayMaster master);
+	
+	HolidayMaster convertToHolidayMaster(HolidayMasterDto masterDto);
 
 	@AfterMapping
 	default void convertToVisitsDto(Visits visit, @MappingTarget VisitsDto visitsDto) {

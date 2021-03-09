@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import increpe.order.mgmt.model.WorkAreaMaster;
+import increpe.order.mgmt.repository.HolidayMasterRepository;
 import increpe.order.mgmt.repository.WorkAreaMasterRepository;
+import increpe.order.mgmt.security.dto.HolidayMasterDto;
 import increpe.order.mgmt.security.dto.WorkAreaMasterDto;
 import increpe.order.mgmt.security.mapper.CompanyMapper;
 
@@ -18,6 +20,9 @@ public class WorkAreaMasterService {
 	
 	@Autowired
 	CompanyService companyService;
+	
+	@Autowired
+	HolidayMasterRepository holidayMasterRepository;
 
 	
 	public WorkAreaMasterDto createWorkAreaMaster(WorkAreaMasterDto dto) {
@@ -55,6 +60,18 @@ public class WorkAreaMasterService {
 	public WorkAreaMasterDto convertMasterServiceToMasterServiceDto(WorkAreaMaster workAreaMaster) {
 		
 		return CompanyMapper.INSTANCE.convertToWorkAreaMasterDto(workAreaMaster);
+	}
+	
+	public HolidayMasterDto createHolidayMaster(HolidayMasterDto masterDto) {
+		
+		return CompanyMapper.INSTANCE.convertToHolidayMasterDto(
+				holidayMasterRepository.save(CompanyMapper.INSTANCE.convertToHolidayMaster(masterDto)));
+	}
+	
+	public HolidayMasterDto getHolidayMasterbyCompanyIdAndMonthYear(Long id, String mY) {
+		
+		return CompanyMapper.INSTANCE.convertToHolidayMasterDto(
+						holidayMasterRepository.findByCompanyId_idAndMonthYear(id, mY));
 	}
 
 }
