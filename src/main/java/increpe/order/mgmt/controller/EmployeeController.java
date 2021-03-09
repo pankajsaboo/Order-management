@@ -19,6 +19,7 @@ import increpe.order.mgmt.security.dto.CompanyProductDto;
 import increpe.order.mgmt.security.dto.CustomerDto;
 import increpe.order.mgmt.security.dto.CustomerSalesPersonRelationDto;
 import increpe.order.mgmt.security.dto.RegistrationResponse;
+import increpe.order.mgmt.security.dto.RequestObject;
 import increpe.order.mgmt.security.dto.SalesPersonDto;
 import increpe.order.mgmt.service.ActivityService;
 import increpe.order.mgmt.service.AttendanceService;
@@ -64,10 +65,10 @@ public class EmployeeController {
 	@Autowired
 	ActivityService activityService;
 	
-	@GetMapping("")
-	public ResponseEntity<SalesPersonDto> getEmployeeProfile(@RequestParam(name = "uId") Long id){
+	@PostMapping("")
+	public ResponseEntity<SalesPersonDto> getEmployeeProfile(@RequestBody RequestObject req){
 		
-		return ResponseEntity.ok(salesPersonService.getSalesPersonByUserId(id));
+		return ResponseEntity.ok(salesPersonService.getSalesPersonByUserId(req.getId()));
 	}
 	
 	@PutMapping("/update")
@@ -113,11 +114,10 @@ public class EmployeeController {
 		return ResponseEntity.ok(expensesService.getExpenseSummary(salesPersonId));
 	}
 
-	@GetMapping("/expense")
-	public ResponseEntity<List<ExpensesDto>> getExpenseBetween(@RequestParam(name = "mY") String monthYear,
-			@RequestParam(name = "uId") Long id) {
+	@PostMapping("/expense")
+	public ResponseEntity<List<ExpensesDto>> getExpenseBetween(@RequestBody RequestObject req) {
 
-		return ResponseEntity.ok(expensesService.getExpensesForMonth(monthYear, id));
+		return ResponseEntity.ok(expensesService.getExpensesForMonth(req.getMY(), req.getId()));
 	}
 	
 	@PutMapping("/expense/update")
@@ -187,10 +187,10 @@ public class EmployeeController {
 		return ResponseEntity.ok(activityService.createNewActivity(activityDto));
 	}
 
-	@GetMapping("/activity/salesperson")
-	public ResponseEntity<List<ActivityDto>> getActivitiesBySalesPersonId(@RequestParam(name = "uId") Long id) {
+	@PostMapping("/activity/salesperson")
+	public ResponseEntity<List<ActivityDto>> getActivitiesBySalesPersonId(@RequestBody RequestObject req) {
 
-		return ResponseEntity.ok(activityService.getAllActivitiesForSalesPerson(id));
+		return ResponseEntity.ok(activityService.getAllActivitiesForSalesPerson(req.getId()));
 	}
 	
 	@PutMapping("/activity/update")

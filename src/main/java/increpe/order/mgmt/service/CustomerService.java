@@ -101,7 +101,7 @@ public class CustomerService {
 
 		return CompanyMapper.INSTANCE
 				.convertToCustomerSalesPersonRelationDtoList(
-						relationRepository.findByCustomerCompanyId_idAndStatus(customerCompanyId,"ACTIVE"));
+						relationRepository.findByCustomerCompanyId_id(customerCompanyId));
 	}
 	
 	@Transactional

@@ -11,7 +11,7 @@ import increpe.order.mgmt.security.dto.CustomerSalesPersonRelationDto;
 
 public interface CustomerSalesPersonRelationRepository extends CrudRepository<CustomerSalesPersonRelation, Long> {
 	
-	List<CustomerSalesPersonRelation> findByCustomerCompanyId_idAndStatus(Long customerCompanyId, String status);
+	List<CustomerSalesPersonRelation> findByCustomerCompanyId_id(Long customerCompanyId);
 
 	List<CustomerSalesPersonRelation> findBySalesPersonId_id(Long salesPersonId);
 	

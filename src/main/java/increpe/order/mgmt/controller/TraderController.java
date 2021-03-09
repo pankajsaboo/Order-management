@@ -89,10 +89,10 @@ public class TraderController {
 		return ResponseEntity.ok(registrationService.registerSalesPerson(request));
 	}
 
-	@GetMapping("/employee")
-	public ResponseEntity<List<SalesPersonDto>> getSalesPersonAccount(@RequestParam Long id) {
+	@PostMapping("/employee")
+	public ResponseEntity<List<SalesPersonDto>> getSalesPersonAccount(@RequestBody RequestObject req) {
 
-		return ResponseEntity.ok(traderService.getAllSalesPersonByCompanyId(id));
+		return ResponseEntity.ok(traderService.getAllSalesPersonByCompanyId(req.getId()));
 	}
 
 	@DeleteMapping("/employee/delete")
@@ -114,7 +114,7 @@ public class TraderController {
 	}
 
 	@PostMapping("/product")
-	public ResponseEntity<List<ProductMasterDto>> getAllProducts(@RequestParam RequestObject req) {
+	public ResponseEntity<List<ProductMasterDto>> getAllProducts(@RequestBody RequestObject req) {
 
 		return ResponseEntity.ok(productService.getAllProducts(req.getId()));
 	}
