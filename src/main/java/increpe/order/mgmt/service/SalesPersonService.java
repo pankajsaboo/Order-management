@@ -128,12 +128,15 @@ public class SalesPersonService {
 
 				spDto.setWorkAreaMasterList(workAreaDtoList);
 			}
+			
+			if(Objects.nonNull(spDto)) {
+				getIfExists(spDto);
+			}
+			
 		} catch (Exception e) {
 			
 			log.info("exception: =======> "+Arrays.toString(e.getStackTrace()));
 		}
-
-		getIfExists(spDto);
 
 		return spDto;
 
@@ -173,18 +176,19 @@ public class SalesPersonService {
 
 	public List<SalesPersonDto> getAllByCompany(List<Long> userIdList) {
 
-		List<SalesPersonWorkAreaRelation> relationList = relationRepository.findBySalesPersonId_UserId_idIn(userIdList);
+		//List<SalesPersonWorkAreaRelation> relationList = relationRepository.findBySalesPersonId_UserId_idIn(userIdList);
 
 		List<SalesPersonDto> salesPersonDtoList = new ArrayList<>();
 
-		for (Iterator<SalesPersonWorkAreaRelation> iterator = relationList.iterator(); iterator.hasNext();) {
+		for (Iterator<Long> iterator = userIdList.iterator(); iterator.hasNext();) {
 
-			SalesPersonWorkAreaRelation salesPersonWorkAreaRelation = (SalesPersonWorkAreaRelation) iterator.next();
+			Long userId = iterator.next();
 
-			SalesPersonDto dto = getSalesPersonByUserId(
-					salesPersonWorkAreaRelation.getSalesPersonId().getUserId().getId());
+			SalesPersonDto dto = getSalesPersonByUserId(userId);
 
-			salesPersonDtoList.add(dto);
+			if(Objects.nonNull(dto)) {
+				salesPersonDtoList.add(dto);
+			}
 		}
 
 		TreeSet<SalesPersonDto> filteredDtoList = salesPersonDtoList.stream().collect(Collectors
