@@ -115,9 +115,13 @@ public class EmployeeController {
 	}
 
 	@PostMapping("/expense")
-	public ResponseEntity<List<ExpensesDto>> getExpenseBetween(@RequestBody RequestObject req) {
-
-		return ResponseEntity.ok(expensesService.getExpensesForMonth(req.getMY(), req.getId()));
+	public ResponseEntity<List<ExpensesDto>> getExpenseBetween(@RequestBody String  inputParam) {
+		
+		//Temporary workaround...
+		String monthYear = inputParam.split("#")[0];
+		Long userId = Long.parseLong(inputParam.split("#")[1]);
+	
+		return ResponseEntity.ok(expensesService.getExpensesForMonth(monthYear, userId));
 	}
 	
 	@PutMapping("/expense/update")

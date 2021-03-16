@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +29,7 @@ public class Expenses {
 	@SequenceGenerator(name = "EXPENSES_SEQ", sequenceName = "expenses_seq")
 	Long id;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sales_person_id")
 	SalesPerson salesPersonId;
 	
