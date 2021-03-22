@@ -1,6 +1,7 @@
 package increpe.order.mgmt.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import increpe.order.mgmt.model.City;
 import increpe.order.mgmt.model.State;
 import increpe.order.mgmt.repository.CityRepository;
 import increpe.order.mgmt.security.dto.CityDto;
+import increpe.order.mgmt.security.dto.StateDto;
 import increpe.order.mgmt.security.mapper.AddressMapper;
 
 @Service
@@ -87,7 +89,22 @@ public class CityService {
 	
 	public City getCityByName(String cityName) {
 		
-		return cityRepository.findByCityName(cityName);
+		City storedCity = cityRepository.findByCityName(cityName.trim().toUpperCase());
+		
+		if(Objects.isNull(storedCity)) {
+			
+			City city = new City();
+			
+			State state = new State();
+			
+			state.setId(1L);
+			city.setCityName(cityName.trim().toUpperCase());
+			city.setStateId(state);
+			
+			return city;
+		}
+		
+		return storedCity;
 	}
 	
 	private CityDto convertCityToCityDto(City city) {

@@ -1,5 +1,6 @@
 package increpe.order.mgmt.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class Address {
 	@JoinColumn(name = "user_id")
 	User userId;
 	
-	@ManyToOne 
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "city_id")
 	City cityId;
 	
