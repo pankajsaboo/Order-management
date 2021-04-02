@@ -58,7 +58,7 @@ public class UserValidationService {
 		final String username = salesPersonDto.getUserId().getUsername();
 		final String employeeId = salesPersonDto.getEmployeeId();
 		
-		checkPhone(null);
+		checkPhone(phone);
 		checkUsername(username);
 		checkEmpId(employeeId);
 	}
