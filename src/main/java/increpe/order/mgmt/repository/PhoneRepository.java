@@ -7,4 +7,6 @@ import increpe.order.mgmt.model.Phone;
 public interface PhoneRepository extends CrudRepository<Phone, Long> {
 
 	Phone findByUserId_id(Long id);
+	
+	boolean existsByPhone(String phone);
 }

@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 
 import increpe.order.mgmt.exceptions.RegistrationException;
 import increpe.order.mgmt.repository.EmailsRepository;
+import increpe.order.mgmt.repository.PhoneRepository;
 import increpe.order.mgmt.repository.SalesPersonRepository;
 import increpe.order.mgmt.repository.UserRepository;
 import increpe.order.mgmt.security.dto.EmailsDto;
+import increpe.order.mgmt.security.dto.PhonesDto;
 import increpe.order.mgmt.security.dto.RegistrationRequest;
 import increpe.order.mgmt.security.dto.SalesPersonDto;
 import increpe.order.mgmt.utils.ExceptionMessageAccessor;
@@ -24,6 +26,8 @@ import increpe.order.mgmt.utils.ExceptionMessageAccessor;
 public class UserValidationService {
 
 	private static final String EMAIL_ALREADY_EXISTS = "email_already_exists";
+	
+	private static final String PHONE_ALREADY_EXISTS = "phone_already_exists";
 
 	private static final String USERNAME_ALREADY_EXISTS = "username_already_exists";
 	
@@ -32,6 +36,8 @@ public class UserValidationService {
 	private final UserRepository userRepository;
 
 	private final EmailsRepository emailsRepository;
+	
+	private final PhoneRepository phoneRepository;
 	
 	private final ExceptionMessageAccessor exceptionMessageAccessor;
 	
@@ -48,11 +54,11 @@ public class UserValidationService {
 	
 	public void validateSalesPerson(SalesPersonDto salesPersonDto) {
 		
-		final EmailsDto email = salesPersonDto.getEmailId();
+		final PhonesDto phone = salesPersonDto.getPhoneId();
 		final String username = salesPersonDto.getUserId().getUsername();
 		final String employeeId = salesPersonDto.getEmployeeId();
 		
-		checkEmail(email);
+		checkPhone(null);
 		checkUsername(username);
 		checkEmpId(employeeId);
 	}
@@ -77,11 +83,26 @@ public class UserValidationService {
 
 		if (existsByEmail) {
 
-			log.warn("{} is already registered!", email);
+			log.warn("{} is already registered!", email.getEmailId());
 
 			final String existsEmail = exceptionMessageAccessor.getMessage(null, EMAIL_ALREADY_EXISTS);
 			throw new RegistrationException(existsEmail);
 		}
+	}
+	
+	private void checkPhone(PhonesDto phone) {
+		
+		final boolean existsByPhone = phoneRepository.existsByPhone(phone.getPhone());
+		
+		if(existsByPhone) {
+			
+			log.warn("{} is already registered!", phone.getPhone());
+
+			final String existsEmail = exceptionMessageAccessor.getMessage(null, PHONE_ALREADY_EXISTS);
+			throw new RegistrationException(existsEmail);
+			
+		}
+		
 	}
 	
 	private void checkEmpId(String empId) {

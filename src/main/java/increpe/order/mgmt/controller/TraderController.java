@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import increpe.order.mgmt.model.SalesPerson;
 import increpe.order.mgmt.repository.WorkAreaMasterRepository;
@@ -130,6 +131,13 @@ public class TraderController {
 
 		return ResponseEntity.ok(traderService.createNewCustomer(request));
 	}
+	
+	@PostMapping("/customer/import")
+	public ResponseEntity<RegistrationResponse> importNewCustomerData(@RequestBody MultipartFile cutomerData) {
+
+		return ResponseEntity.ok(traderService.importNewCustomerData(cutomerData));
+	}
+
 
 	@GetMapping("/customer")
 	public ResponseEntity<List<CustomerDto>> getAllCustomers(@RequestParam Long id) {

@@ -1,12 +1,19 @@
 package increpe.order.mgmt.service;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import increpe.order.mgmt.model.Company;
 import increpe.order.mgmt.model.CompanyUserRelation;
@@ -16,19 +23,26 @@ import increpe.order.mgmt.repository.SellerBuyerRelationRepository;
 import increpe.order.mgmt.repository.ExpensesSummary;
 import increpe.order.mgmt.repository.SalesPersonWorkAreaRelationRepository;
 import increpe.order.mgmt.security.dto.AddressDto;
+import increpe.order.mgmt.security.dto.AddressTypeDto;
 import increpe.order.mgmt.security.dto.AttendanceReportDto;
 import increpe.order.mgmt.security.dto.AuthenticatedUserDto;
+import increpe.order.mgmt.security.dto.CityDto;
 import increpe.order.mgmt.security.dto.CompanyDto;
+import increpe.order.mgmt.security.dto.CompanyTypeDto;
 import increpe.order.mgmt.security.dto.CompanyTypeRelationDto;
 import increpe.order.mgmt.security.dto.CompanyUserRelationDto;
 import increpe.order.mgmt.security.dto.CustomerDto;
+import increpe.order.mgmt.security.dto.EmailTypeDto;
 import increpe.order.mgmt.security.dto.EmailsDto;
 import increpe.order.mgmt.security.dto.ExpenseReportDto;
+import increpe.order.mgmt.security.dto.PhoneTypeDto;
 import increpe.order.mgmt.security.dto.PhonesDto;
 import increpe.order.mgmt.security.dto.ProductMasterDto;
 import increpe.order.mgmt.security.dto.RegistrationRequest;
 import increpe.order.mgmt.security.dto.RegistrationResponse;
+import increpe.order.mgmt.security.dto.RolesDto;
 import increpe.order.mgmt.security.dto.SalesPersonDto;
+import increpe.order.mgmt.security.dto.UserTypeDto;
 import increpe.order.mgmt.security.mapper.UserMapper;
 import increpe.order.mgmt.security.service.UserService;
 import increpe.order.mgmt.security.utils.SecurityConstants;
@@ -104,6 +118,101 @@ public class TraderService {
 		sellerBuyerRelationRepository.save(relation);
 
 		return new RegistrationResponse("Customer Registered successfully!");
+	}
+	
+	public RegistrationResponse importNewCustomerData(MultipartFile inputFile) {
+		
+		try {
+			
+			BufferedReader fileReader = new BufferedReader(new InputStreamReader(inputFile.getInputStream(), "UTF-8"));
+			
+			CSVParser csvParser = new CSVParser(fileReader,
+		            CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
+			
+			Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+			
+			for (Iterator<CSVRecord> iterator = csvRecords.iterator(); iterator.hasNext();) {
+				
+				CSVRecord record = (CSVRecord) iterator.next();
+				
+				System.out.println(record.toMap().toString());
+				
+				RegistrationRequest req = buildRequestObjectForImport(record);
+				
+				createNewCustomer(req);	
+			}
+			
+		} catch (Exception e) {
+			
+			System.out.println("Exception Occured in Import: "+e);
+		}
+		
+		return new RegistrationResponse("Customer data imported successfully!");
+	}
+	
+	public RegistrationRequest buildRequestObjectForImport(CSVRecord record) {
+		
+		RegistrationRequest importRequest = new RegistrationRequest();
+		
+		CityDto cDto = new CityDto();
+		cDto.setCityName(record.get("city"));
+		
+		AddressTypeDto adDto = new AddressTypeDto();
+		adDto.setAddressTypeName("COMPANY");
+		
+		AddressDto aDto = new AddressDto();
+		aDto.setCity(cDto);
+		aDto.setAddressType(adDto);
+		
+		EmailTypeDto etDto = new EmailTypeDto();
+		etDto.setEmailTypeName("OFFICE");
+		
+		EmailsDto eDto = new EmailsDto();
+		eDto.setEmailId(record.get("email"));
+		eDto.setEmailTypeId(etDto);
+		eDto.setStatus("ACTIVE");
+		
+		PhoneTypeDto ptDto = new PhoneTypeDto();
+		ptDto.setPhoneTypeName("OFFICE");
+		
+		PhonesDto pDto = new PhonesDto();
+		pDto.setPhone(record.get("phone"));
+		pDto.setPhoneTypeId(ptDto);
+		pDto.setStatus("ACTIVE");
+		
+		UserTypeDto utDto = new UserTypeDto();
+		utDto.setId(1L);
+		
+		RolesDto rDto = new RolesDto();
+		rDto.setId(1L);
+		
+		AuthenticatedUserDto auDto = new AuthenticatedUserDto();
+		auDto.setName(record.get("customerName"));
+		auDto.setUserRole(rDto);
+		auDto.setUserTypeId(utDto);
+		auDto.setUsername(record.get("email"));
+		auDto.setPassword(record.get("phone"));
+		
+		CompanyDto coDto = new CompanyDto();
+		coDto.setCompanyName(record.get("companyName"));
+		if(record.get("gst") != "") coDto.setGstNumber(record.get("gst"));		
+		
+		CompanyTypeDto cotDto = new CompanyTypeDto();
+		cotDto.setId(1L);
+		
+		CompanyTypeRelationDto ctrDto = new CompanyTypeRelationDto();
+		ctrDto.setCompanyId(coDto);
+		ctrDto.setCompanyTypeId(cotDto);
+		ctrDto.setStatus("ACTIVE");
+		
+		importRequest.setAddressId(aDto);
+		importRequest.setCompanyTypeRelationId(ctrDto);
+		importRequest.setUserId(auDto);
+		importRequest.setEmailId(eDto);
+		importRequest.setPhoneId(pDto);
+		
+		return importRequest;
+		
 	}
 
 	public RegistrationResponse createNewProduct(ProductMasterDto productDto) {
