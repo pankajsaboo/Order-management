@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -139,7 +140,9 @@ public class TraderService {
 				
 				RegistrationRequest req = buildRequestObjectForImport(record);
 				
-				createNewCustomer(req);	
+				if(!Objects.isNull(req)) {
+					createNewCustomer(req);	
+				}
 			}
 			
 		} catch (Exception e) {
@@ -152,6 +155,7 @@ public class TraderService {
 	
 	public RegistrationRequest buildRequestObjectForImport(CSVRecord record) {
 		
+		
 		RegistrationRequest importRequest = new RegistrationRequest();
 		
 		CityDto cDto = new CityDto();
@@ -163,6 +167,9 @@ public class TraderService {
 		AddressDto aDto = new AddressDto();
 		aDto.setCity(cDto);
 		aDto.setAddressType(adDto);
+		aDto.setAddressLine1(record.get("address"));	
+		aDto.setAddressLine2(record.get("pincode"));
+		aDto.setAddressLine3(record.get("zone"));
 		
 		EmailTypeDto etDto = new EmailTypeDto();
 		etDto.setEmailTypeName("OFFICE");
@@ -186,12 +193,15 @@ public class TraderService {
 		RolesDto rDto = new RolesDto();
 		rDto.setId(1L);
 		
+		String username = UUID.randomUUID().toString();
+		String password = UUID.randomUUID().toString();
+		
 		AuthenticatedUserDto auDto = new AuthenticatedUserDto();
 		auDto.setName(record.get("customerName"));
 		auDto.setUserRole(rDto);
 		auDto.setUserTypeId(utDto);
-		auDto.setUsername(record.get("email"));
-		auDto.setPassword(record.get("phone"));
+		auDto.setUsername(username);
+		auDto.setPassword(password);
 		
 		CompanyDto coDto = new CompanyDto();
 		coDto.setCompanyName(record.get("companyName"));
