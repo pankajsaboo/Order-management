@@ -162,7 +162,7 @@ public class TraderService {
 		cDto.setCityName(record.get("city"));
 		
 		AddressTypeDto adDto = new AddressTypeDto();
-		adDto.setAddressTypeName("COMPANY");
+		adDto.setId(1L);
 		
 		AddressDto aDto = new AddressDto();
 		aDto.setCity(cDto);

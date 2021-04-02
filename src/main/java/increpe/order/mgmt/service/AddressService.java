@@ -32,31 +32,14 @@ public class AddressService{
 
 		Address address = convertAddressDtoToAddress(addressDto);
 
-		AddressType addressTypeId = addressTypeService
-				.getAddressTypeByName(address.getAddressTypeId().getAddressTypeName());
+		if(!Objects.isNull(addressDto.getCity())) {
+			
+			City cityId = cityService.getCityByName(address.getCityId().getCityName());
 
-		City cityId = cityService.getCityByName(address.getCityId().getCityName());
-
-		address.setAddressTypeId(addressTypeId);
-
-		address.setCityId(cityId);
+			address.setCityId(cityId);
+		}
 
 		return convertAddressToAddressDto(addressRepository.save(address));
-	}
-
-	
-	public Address createAddress(Address address) {
-		
-		AddressType addressTypeId = addressTypeService
-				.getAddressTypeByName(address.getAddressTypeId().getAddressTypeName());
-
-		City cityId = cityService.getCityByName(address.getCityId().getCityCode());
-
-		address.setAddressTypeId(addressTypeId);
-
-		address.setCityId(cityId);
-
-		return addressRepository.save(address);
 	}
 	
 	public AddressDto updateAddress(AddressDto addressDto) {
