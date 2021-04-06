@@ -146,7 +146,7 @@ public class SalesPersonService {
 
 		CompanyDto customerCompany = companyService.convertToCompanyDto(companyService.getCompany(customerId));
 
-		AuthenticatedUserDto customerAdmin = companyUserRelationService.getRelationByCompanyAndUserType(customerId, 2L)
+		AuthenticatedUserDto customerAdmin = companyUserRelationService.getRelationByCompanyAndUserType(customerId, 1L)
 				.getUserId();
 
 		PhonesDto pDto = phoneService.getPhoneByUserId(customerAdmin.getId());

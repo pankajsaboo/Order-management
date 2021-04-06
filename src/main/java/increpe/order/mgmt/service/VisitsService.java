@@ -47,5 +47,12 @@ public class VisitsService {
 
 		return new RegistrationResponse("Visit Updated successfully");
 	}
+	
+	public boolean deleteVisit(Long visitId) {
+		
+		visitsRepository.deleteById(visitId);
+		
+		return visitsRepository.existsById(visitId);
+	}
 
 }

@@ -62,5 +62,12 @@ public class ExpensesService {
 		
 		return new RegistrationResponse("Expense Updated successfully!");
 	}
+	
+	public boolean deleteExpense(Long expenseId) {
+		
+		expensesRepository.deleteById(expenseId);
+		
+		return expensesRepository.existsById(expenseId);
+	}
 
 }

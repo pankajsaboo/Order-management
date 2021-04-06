@@ -37,6 +37,9 @@ public class VisitsDto {
 	@JsonProperty(value = "comment")
 	String comment;
 	
+	@JsonProperty(value = "selfie")
+	String selfie;
+	
 	@JsonProperty(value = "status")
 	String status;
 }

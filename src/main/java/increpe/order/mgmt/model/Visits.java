@@ -47,6 +47,9 @@ public class Visits {
 	@Column(name = "comment", columnDefinition = "TEXT")
 	String comment;
 	
+	@Column(name = "selfie", columnDefinition = "TEXT")
+	String selfie;
+	
 	@Column(name  = "satatus")
 	String status;
 }
