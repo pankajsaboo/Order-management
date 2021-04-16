@@ -262,11 +262,12 @@ public class SalesPersonService {
 		// Optimization required here...
 
 		if (isTrader) {
-			SalesPerson salesPerson = CompanyMapper.INSTANCE.convertToSalesPerson(salesPersonDto);
+			
+			SalesPerson updatedRecord = creatSalesPersonAccount(salesPersonDto);
 
-			deleteSalesPerSonWorkAreaMappings(salesPerson);
+			deleteSalesPerSonWorkAreaMappings(updatedRecord);
 
-			mapWorkAreaToSalesPerson(salesPersonDto.getWorkAreaMasterList(), salesPerson);
+			mapWorkAreaToSalesPerson(salesPersonDto.getWorkAreaMasterList(), updatedRecord);
 		}
 
 		return new RegistrationResponse("Sales Person Data updated successfully!");
