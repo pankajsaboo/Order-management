@@ -148,17 +148,17 @@ public class TraderController {
 		return ResponseEntity.ok(traderService.importNewCustomerData(cutomerData));
 	}
 
-	@PostMapping("/customer")
-	public ResponseEntity<List<CustomerDto>> getAllCustomers(@RequestBody RequestObject reqObj) {
-
-		Pageable page = PageRequest.of(reqObj.getPageBegin(), reqObj.getPageLength());
-
-//		if(reqObj.getSortBy() != null) {
-//			page = reqObj.getDir() == "asc" ? PageRequest.of(reqObj.getPageBegin(), reqObj.getPageLength(), ) 
-//		}
-
-		return ResponseEntity.ok(traderService.getAllCustomersByCompany(reqObj.getId(), page));
-	}
+//	@PostMapping("/customer")
+//	public ResponseEntity<List<CustomerDto>> getAllCustomers(@RequestBody RequestObject reqObj) {
+//
+//		Pageable page = PageRequest.of(reqObj.getPageBegin(), reqObj.getPageLength());
+//
+////		if(reqObj.getSortBy() != null) {
+////			page = reqObj.getDir() == "asc" ? PageRequest.of(reqObj.getPageBegin(), reqObj.getPageLength(), ) 
+////		}
+//
+//		return ResponseEntity.ok(traderService.getAllCustomersByCompany(reqObj.getId(), page));
+//	}
 
 	@GetMapping("/customer")
 	public ResponseEntity<List<CustomerDto>> getAllCustomers(@RequestParam Long id) {

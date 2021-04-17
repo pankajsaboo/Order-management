@@ -263,20 +263,20 @@ public class TraderService {
 		return salesPersonDtoList;
 	}
 	
-	public List<SalesPersonDto> getAllSalesPersonByCompanyId(Long id, Pageable pageable) {
-
-		List<Long> userIdList = getAllUserIdByCompanyId(id, pageable);
-
-		List<SalesPersonDto> salesPersonDtoList = salesPersonService.getAllByCompany(userIdList);
-
-		for (Iterator<SalesPersonDto> iterator = salesPersonDtoList.iterator(); iterator.hasNext();) {
-
-			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
-			salesPersonService.getIfExists(salesPersonDto);
-		}
-
-		return salesPersonDtoList;
-	}
+//	public List<SalesPersonDto> getAllSalesPersonByCompanyId(Long id, Pageable pageable) {
+//
+//		List<Long> userIdList = getAllUserIdByCompanyId(id, pageable);
+//
+//		List<SalesPersonDto> salesPersonDtoList = salesPersonService.getAllByCompany(userIdList);
+//
+//		for (Iterator<SalesPersonDto> iterator = salesPersonDtoList.iterator(); iterator.hasNext();) {
+//
+//			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
+//			salesPersonService.getIfExists(salesPersonDto);
+//		}
+//
+//		return salesPersonDtoList;
+//	}
 	
 	
 
@@ -297,22 +297,22 @@ public class TraderService {
 
 	}
 	
-	public List<Long> getAllUserIdByCompanyId(Long id, Pageable pageable) {
-
-		List<CompanyUserRelationDto> relationList = relationService.getRelationByCompany(id, pageable);
-
-		List<Long> userIdList = new ArrayList<>();
-
-		for (Iterator<CompanyUserRelationDto> iterator = relationList.iterator(); iterator.hasNext();) {
-
-			CompanyUserRelationDto companyUserRelationDto = (CompanyUserRelationDto) iterator.next();
-
-			userIdList.add(companyUserRelationDto.getUserId().getId());
-		}
-
-		return userIdList;
-
-	}
+//	public List<Long> getAllUserIdByCompanyId(Long id, Pageable pageable) {
+//
+//		List<CompanyUserRelationDto> relationList = relationService.getRelationByCompany(id, pageable);
+//
+//		List<Long> userIdList = new ArrayList<>();
+//
+//		for (Iterator<CompanyUserRelationDto> iterator = relationList.iterator(); iterator.hasNext();) {
+//
+//			CompanyUserRelationDto companyUserRelationDto = (CompanyUserRelationDto) iterator.next();
+//
+//			userIdList.add(companyUserRelationDto.getUserId().getId());
+//		}
+//
+//		return userIdList;
+//
+//	}
 	
 	public CustomerDto getSingleCustomer(Long customerId, Long traderId) {
 		
@@ -353,59 +353,11 @@ public class TraderService {
 			SellerBuyerRelation sellerBuyerRelation = (SellerBuyerRelation) iterator.next();
 			
 			customerCompanyList.add(prepareSingleCustomerDtoForTrader(sellerBuyerRelation));
-
-//			CompanyDto customerCompany = companyService.convertToCompanyDto(sellerBuyerRelation.getBuyerCompanyId());
-//
-//			 CompanyUserRelationDto relDto = companyUserRelationService
-//					.getRelationByCompanyAndUserType(customerCompany.getId(), 1L);
-//
-//			if (Objects.nonNull(relDto)) {
-//				
-//				CustomerDto cDto = new CustomerDto();
-//
-//				cDto.setCompanyId(customerCompany);
-//				cDto.setUserId(relDto.getUserId());
-//
-//				getIfExist(cDto);
-//
-//				customerCompanyList.add(cDto);
-//			}
 		}
 
 		return customerCompanyList;
 	}
 	
-	public List<CustomerDto> getAllCustomersByCompany(Long id, Pageable pageable) {
-
-		List<SellerBuyerRelation> relationList = sellerBuyerRelationRepository.findBySellerCompanyId_id(id, pageable);
-
-		List<CustomerDto> customerCompanyList = new ArrayList<>();
-
-		for (Iterator<SellerBuyerRelation> iterator = relationList.iterator(); iterator.hasNext();) {
-
-			SellerBuyerRelation sellerBuyerRelation = (SellerBuyerRelation) iterator.next();
-
-			CompanyDto customerCompany = companyService.convertToCompanyDto(sellerBuyerRelation.getBuyerCompanyId());
-
-			 CompanyUserRelationDto relDto = companyUserRelationService
-					.getRelationByCompanyAndUserType(customerCompany.getId(), 1L);
-
-			if (Objects.nonNull(relDto)) {
-				
-				CustomerDto cDto = new CustomerDto();
-
-				cDto.setCompanyId(customerCompany);
-				cDto.setUserId(relDto.getUserId());
-
-				getIfExist(cDto);
-
-				customerCompanyList.add(cDto);
-			}
-		}
-
-		return customerCompanyList;
-	}
-
 	public List<ExpenseReportDto> getExpenseReportByCompanyId(Long companyId) {
 
 		List<ExpenseReportDto> reportList = new ArrayList<>();
