@@ -3,6 +3,8 @@ package increpe.order.mgmt.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -74,13 +76,13 @@ public class TraderController {
 
 	@Autowired
 	ActivityService activityService;
-	
+
 	@Autowired
 	ExpensesService expenseService;
-	
+
 	@Autowired
 	AttendanceService attendanceService;
-	
+
 	@Autowired
 	WorkAreaMasterService workMasterService;
 
@@ -119,6 +121,14 @@ public class TraderController {
 
 		return ResponseEntity.ok(productService.getAllProducts(req.getId()));
 	}
+	
+	@GetMapping("/product/single")
+	public ResponseEntity<ProductMasterDto> getSingleProduct(@RequestParam Long pId, @RequestParam Long cId) {
+
+		return ResponseEntity.ok(productService.getSingleProduct(pId, cId));
+	}
+	
+	
 
 	@PutMapping("/product/update")
 	public ResponseEntity<RegistrationResponse> updateProduct(@RequestBody ProductMasterDto productDto) {
@@ -131,18 +141,35 @@ public class TraderController {
 
 		return ResponseEntity.ok(traderService.createNewCustomer(request));
 	}
-	
+
 	@PostMapping("/customer/import")
 	public ResponseEntity<RegistrationResponse> importNewCustomerData(@RequestBody MultipartFile cutomerData) {
 
 		return ResponseEntity.ok(traderService.importNewCustomerData(cutomerData));
 	}
 
+	@PostMapping("/customer")
+	public ResponseEntity<List<CustomerDto>> getAllCustomers(@RequestBody RequestObject reqObj) {
+
+		Pageable page = PageRequest.of(reqObj.getPageBegin(), reqObj.getPageLength());
+
+//		if(reqObj.getSortBy() != null) {
+//			page = reqObj.getDir() == "asc" ? PageRequest.of(reqObj.getPageBegin(), reqObj.getPageLength(), ) 
+//		}
+
+		return ResponseEntity.ok(traderService.getAllCustomersByCompany(reqObj.getId(), page));
+	}
 
 	@GetMapping("/customer")
 	public ResponseEntity<List<CustomerDto>> getAllCustomers(@RequestParam Long id) {
 
 		return ResponseEntity.ok(traderService.getAllCustomersByCompany(id));
+	}
+
+	@GetMapping("/customer/single")
+	public ResponseEntity<CustomerDto> getSingleCustomer(@RequestParam Long sId, @RequestParam Long bId) {
+
+		return ResponseEntity.ok(traderService.getSingleCustomer(bId, sId));
 	}
 
 	@PutMapping("/customer/update")
@@ -181,7 +208,7 @@ public class TraderController {
 
 		return ResponseEntity.ok(companyProductService.updateCompanyProductRelation(cProductDto));
 	}
-	
+
 	@DeleteMapping("/customer/product/delete")
 	public ResponseEntity<Boolean> deleteRelation(@RequestParam Long id) {
 		return ResponseEntity.ok(companyProductService.deleteCompanyProductRelation(id));
@@ -193,7 +220,7 @@ public class TraderController {
 
 		return ResponseEntity.ok(customerService.mapSalesPersonsToCustomer(relationList));
 	}
-	
+
 	@PutMapping("/customer/sp/update")
 	public ResponseEntity<RegistrationResponse> updateCustomerSalesPersonMapping(
 			@RequestBody List<CustomerSalesPersonRelationDto> relationList) {
@@ -228,77 +255,76 @@ public class TraderController {
 	}
 
 	@PostMapping("/activity-master/add")
-	public ResponseEntity<RegistrationResponse> addNewActivityMasterList(
-			@RequestBody ActivityMasterDto masterDto) {
+	public ResponseEntity<RegistrationResponse> addNewActivityMasterList(@RequestBody ActivityMasterDto masterDto) {
 
 		return ResponseEntity.ok(activityService.createActivityMaster(masterDto));
 	}
-	
+
 	@GetMapping("/activity-master")
-	public ResponseEntity<List<ActivityMasterDto>> getAllActivityMasters(@RequestParam Long id){
-		
+	public ResponseEntity<List<ActivityMasterDto>> getAllActivityMasters(@RequestParam Long id) {
+
 		return ResponseEntity.ok(activityService.getAllActivityMastersForCompany(id));
 	}
-	
+
 	@PutMapping("/activity-master/update")
-	public ResponseEntity<RegistrationResponse> updateActivityMaster(
-			@RequestBody ActivityMasterDto masterDto) {
+	public ResponseEntity<RegistrationResponse> updateActivityMaster(@RequestBody ActivityMasterDto masterDto) {
 
 		return ResponseEntity.ok(activityService.updateActivityMaster(masterDto));
 	}
-	
+
 	@GetMapping("/reports/expense")
-	public ResponseEntity<List<ExpenseReportDto>> getExpenseReportSummaryForCompany(@RequestParam Long id){
+	public ResponseEntity<List<ExpenseReportDto>> getExpenseReportSummaryForCompany(@RequestParam Long id) {
 		return ResponseEntity.ok(traderService.getExpenseReportByCompanyId(id));
 	}
-	
+
 	@PostMapping("/reports/expense/detail")
 	public ResponseEntity<Object> getExpenseBetween(@RequestBody RequestObject req) {
 
 		return ResponseEntity.ok(expenseService.getExpensesForMonth(req.getMY(), req.getId()));
 	}
-	
+
 	@GetMapping("/reports/attendance")
 	public ResponseEntity<List<AttendanceReportDto>> getAttendanceReportSummaryForCompany(
-			@RequestParam(name = "mY") String monthYear, @RequestParam Long id){
+			@RequestParam(name = "mY") String monthYear, @RequestParam Long id) {
 		return ResponseEntity.ok(traderService.getAttendanceReportForCompanyByMonthYear(id, monthYear));
 	}
-	
+
 	@GetMapping("/reports/attendance/daily")
 	public ResponseEntity<List<AttendanceDto>> getDailyAttendance(@RequestParam(name = "d") String date,
 			@RequestParam Long id) {
 
 		return ResponseEntity.ok(traderService.getDailyAttendanceByCompanyId(id, date));
 	}
-	
+
 	@GetMapping("/reports/attendance/user")
 	public ResponseEntity<List<AttendanceDto>> getMonthlyAttendanceByUserId(@RequestParam(name = "mY") String monthYear,
 			@RequestParam(name = "uId") Long id) {
 		return ResponseEntity.ok(attendanceService.getAttendanceByMonth(monthYear, id));
 	}
-	
+
 	@PostMapping("/reports/activity")
-	public ResponseEntity<List<ActivityDto>> getActivityReportsForCompany(@RequestBody RequestObject req){
+	public ResponseEntity<List<ActivityDto>> getActivityReportsForCompany(@RequestBody RequestObject req) {
 		return ResponseEntity.ok(traderService.getActivityReports(req.getId()));
 	}
-	
+
 	@GetMapping("/reports/visits")
-	public ResponseEntity<List<VisitsDto>> getVisitReportsForCompany(@RequestParam Long id){
+	public ResponseEntity<List<VisitsDto>> getVisitReportsForCompany(@RequestParam Long id) {
 		return ResponseEntity.ok(traderService.getVisitReports(id));
 	}
-	
+
 	@GetMapping("/reports/tour")
-	public ResponseEntity<List<TourDto>> getTourReportsForCompany(@RequestParam Long id){
+	public ResponseEntity<List<TourDto>> getTourReportsForCompany(@RequestParam Long id) {
 		return ResponseEntity.ok(traderService.getTourReports(id));
 	}
-	
+
 	@PostMapping("/masters/holiday/add")
-	public ResponseEntity<HolidayMasterDto> addNewHolidayMaster(@RequestBody HolidayMasterDto masterDto){
+	public ResponseEntity<HolidayMasterDto> addNewHolidayMaster(@RequestBody HolidayMasterDto masterDto) {
 		return ResponseEntity.ok(workMasterService.createHolidayMaster(masterDto));
 	}
-	
+
 	@GetMapping("/masters/holiday")
-	public ResponseEntity<HolidayMasterDto> getHolidayMaster(@RequestParam("cId") Long id, @RequestParam("mY") String mY){
+	public ResponseEntity<HolidayMasterDto> getHolidayMaster(@RequestParam("cId") Long id,
+			@RequestParam("mY") String mY) {
 		return ResponseEntity.ok(workMasterService.getHolidayMasterbyCompanyIdAndMonthYear(id, mY));
 	}
 }

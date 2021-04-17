@@ -43,6 +43,15 @@ public class Activity {
 	@Column(name = "note")
 	String note;
 	
+	@Column(name = "status")
+	String status;
+	
+	@Column(name = "status_remark")
+	String statusRemark;
+	
+	@Column(name = "updated_date")
+	LocalDate updatedDate;
+	
 	@Column(name = "photo_1", columnDefinition = "TEXT")
 	String photo_1;
 	

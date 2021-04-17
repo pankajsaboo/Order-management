@@ -55,5 +55,11 @@ public class Order{
 	
 	@Column(name = "status")
 	String status;
+	
+	@Column(name = "updated_date")
+	LocalDate updatedDate;
+	
+	@Column(name = "status_remark")
+	String statusRemark;
 
 }

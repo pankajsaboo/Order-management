@@ -40,6 +40,10 @@ public class ProductService {
 		return null;
 	}
 	
+	public ProductMasterDto getSingleProduct(Long productId, Long traderId) {
+		return CompanyMapper.INSTANCE.convertToProductMasterDto(productRepository.findByIdAndCompanyId_id(productId, traderId));
+	}
+	
 	public boolean deleteProduct(ProductMasterDto productDto) {
 		
 		return false;

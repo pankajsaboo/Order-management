@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +29,7 @@ public class Tour {
 	@SequenceGenerator(name = "TOUR_SEQ", sequenceName = "tour_seq")
 	Long id;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sales_person_id")
 	SalesPerson salesPersonId;
 	
@@ -43,4 +44,13 @@ public class Tour {
 	
 	@Column(name = "tour_details", columnDefinition = "TEXT")
 	String tourDetails;
+	
+	@Column(name = "status")
+	String status;
+	
+	@Column(name = "status_remark")
+	String statusRemark;
+	
+	@Column(name = "updated_date")
+	LocalDate updatedDate;
 }

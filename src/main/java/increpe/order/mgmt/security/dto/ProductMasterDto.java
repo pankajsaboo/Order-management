@@ -29,5 +29,7 @@ public class ProductMasterDto {
 	
 	String productImage;
 	
+	Double defaultPrice;
+	
 	String status;
 }

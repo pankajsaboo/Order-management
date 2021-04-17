@@ -15,7 +15,7 @@ public interface ProductMasterRepository extends CrudRepository<ProductMaster, L
 	List<ProductMaster> findByProductBrand(String productBrand);
 	
 	List<ProductMaster> findByCompanyId_id(Long companyId);
-
-	//List<ProductMaster> saveAll(List<ProductMasterDto> productList);
+	
+	ProductMaster findByIdAndCompanyId_id(Long id, Long companyId);
 
 }

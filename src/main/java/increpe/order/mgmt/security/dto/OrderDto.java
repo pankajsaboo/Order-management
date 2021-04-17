@@ -18,14 +18,18 @@ public class OrderDto {
 
 	@JsonProperty(value = "_id")
 	Long id;
-	
+
 	SalesPersonDto salesPersonId;
-	
+
 	LocalDate orderDate;
-	
+
 	Double totalValue;
-	
+
 	List<OrderDetailsDto> orderDetailsList;
-	
+
 	String status;
+
+	LocalDate updatedDate;
+
+	String statusRemark;
 }

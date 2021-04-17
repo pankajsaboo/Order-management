@@ -2,6 +2,8 @@ package increpe.order.mgmt.sp.dto;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import increpe.order.mgmt.security.dto.SalesPersonDto;
@@ -33,4 +35,10 @@ public class ActivityDto {
 	String photo_2;
 	
 	String photo_3;
+	
+	String status;
+	
+	String statusRemark;
+	
+	LocalDate updatedDate;
 }

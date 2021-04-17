@@ -42,6 +42,9 @@ public class ProductMaster{
 	@Column(name = "product_image", columnDefinition = "TEXT")
 	String productImage;
 	
+	@Column(name = "default_price")
+	Double defaultPrice;
+	
 	@Column(name = "status")
 	String status;
 }

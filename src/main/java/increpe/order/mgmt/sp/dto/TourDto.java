@@ -16,14 +16,20 @@ public class TourDto {
 
 	@JsonProperty(value = "_id")
 	Long id;
-	
+
 	SalesPersonDto salesPersonId;
-	
+
 	String location;
-	
+
 	LocalDate startDate;
-	
+
 	LocalDate endDate;
-	
+
 	String tourDetails;
+
+	String status;
+
+	String statusRemark;
+
+	LocalDate updatedDate;
 }
