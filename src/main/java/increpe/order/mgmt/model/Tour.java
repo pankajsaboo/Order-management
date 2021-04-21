@@ -33,6 +33,9 @@ public class Tour {
 	@JoinColumn(name = "sales_person_id")
 	SalesPerson salesPersonId;
 	
+	@Column(name = "from_location")
+	String fromLocation;
+	
 	@Column(name = "location")
 	String location;
 	

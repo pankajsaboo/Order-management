@@ -18,6 +18,8 @@ public class TourDto {
 	Long id;
 
 	SalesPersonDto salesPersonId;
+	
+	String fromLocation;
 
 	String location;
 
