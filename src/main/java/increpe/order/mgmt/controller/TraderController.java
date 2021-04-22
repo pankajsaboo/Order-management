@@ -283,11 +283,11 @@ public class TraderController {
 		return ResponseEntity.ok(expenseService.getExpensesForMonth(mY,id));
 	}
 	
-//	@PostMapping("/reports/expense/daily")
-//	public ResponseEntity<List<ExpensesDto>> getExpenseForDay(@RequestBody RequestObject req) {
+//	@PostMapping("/reports/expense/detail")
+//	public ResponseEntity<List<ExpensesDto>> getExpenseBetween(@RequestBody RequestObject req) {
 //
-//		return ResponseEntity.ok(expenseService.getExpensesForDay(req.getDate()));
-//	} 
+//		return ResponseEntity.ok(expenseService.getExpensesForMonth(req.getMY(), req.getId()));
+//	}
 
 	@GetMapping("/reports/attendance")
 	public ResponseEntity<List<AttendanceReportDto>> getAttendanceReportSummaryForCompany(
