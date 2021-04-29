@@ -20,7 +20,10 @@ public class SecurityConstants {
 	/**
 	 * Token expiration time 1 days.
 	 */
+	
 	public static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000;
+	
+	public static final String REFRESH_TOKEN = "832323458153C21E9685D7AB055262CA33DF061ECA55EDAB245F27E912640209";
 
 	/**
 	 * Secret key for signature
@@ -49,6 +52,8 @@ public class SecurityConstants {
 	public static final String LOGIN_REQUEST_URI = "/login";
 
 	public static final String REGISTRATION_REQUEST_URI = "/register";
+	
+	public static final String REFRESH_TOKEN_URI = "/refresh";
 	
 	public static final String SUPER_ADMIN_URI ="/sa";
 

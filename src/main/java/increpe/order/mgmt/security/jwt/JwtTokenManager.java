@@ -7,12 +7,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import increpe.order.mgmt.model.User;
 import increpe.order.mgmt.security.dto.AuthenticatedUserDto;
-import increpe.order.mgmt.security.dto.SalesPersonDto;
 import increpe.order.mgmt.security.service.UserService;
 import increpe.order.mgmt.service.CompanyUserRelationService;
-import increpe.order.mgmt.service.SalesPersonService;
 
 import static increpe.order.mgmt.security.utils.SecurityConstants.*;
 
@@ -54,7 +51,7 @@ public class JwtTokenManager {
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
 				.compact();
 	}
-
+	
 	public String getUsernameFromToken(String token) {
 
 		final Claims claims = getAllClaimsFromToken(token);

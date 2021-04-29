@@ -36,6 +36,10 @@ public class UserService {
 
 		return userRepository.findByUsername(username);
 	}
+	
+	public AuthenticatedUserDto findAuthenticatedUser(Long userId) {
+		return convertUserToUserDto(userRepository.findById(userId).get());
+	}
 
 	
 	public AuthenticatedUserDto findAuthenticatedUserByUsername(String username) {

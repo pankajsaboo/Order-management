@@ -2,9 +2,17 @@ package increpe.order.mgmt.security.dto;
 
 import org.springframework.data.domain.Pageable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import increpe.order.mgmt.sp.dto.ActivityMasterDto;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Data
+@NoArgsConstructor
+@FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class RequestObject {
 	
 	String mY;
@@ -26,5 +34,9 @@ public class RequestObject {
 	
 	//Sorting direction desc | asc
 	String dir;
+	
+	String date;
+	
+	String refreshToken;
 
 }

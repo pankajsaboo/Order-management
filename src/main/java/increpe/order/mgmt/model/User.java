@@ -45,4 +45,7 @@ public class User {
 	@Column(name = "profile_picture", columnDefinition = "TEXT")
 	String profilePicture;
 	
+	@Column(name = "refresh_Token", columnDefinition = "TEXT default '832323458153C21E9685D7AB055262CA33DF061ECA55EDAB245F27E912640209'")
+	String refreshToken;
+	
 }

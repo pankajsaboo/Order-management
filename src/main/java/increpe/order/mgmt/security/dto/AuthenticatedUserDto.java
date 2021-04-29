@@ -26,5 +26,7 @@ public class AuthenticatedUserDto {
 	private UserTypeDto userTypeId;
 	
 	private String profilePicture;
+	
+	private String refreshToken;
 
 }
