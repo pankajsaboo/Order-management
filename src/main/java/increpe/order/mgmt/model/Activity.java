@@ -19,7 +19,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Entity(name = "activity")
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
-public class Activity {
+public class Activity extends BaseClass {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "activity_seq")
@@ -60,4 +60,5 @@ public class Activity {
 	
 	@Column(name = "photo_3", columnDefinition = "TEXT")
 	String photo_3;
+	
 }
