@@ -1,5 +1,6 @@
 package increpe.order.mgmt.security.dto;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,8 +16,26 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = false, level = AccessLevel.PRIVATE)
 public class RequestObject {
 	
-	String mY;
+	//String mY;
 	
+	String monthYear;
+	
+	String date;
+	
+	Long userId;
+	
+	Long companyId;
+	
+	Long productId;
+	
+	int page;
+	
+	int size;
+	
+	// date | monthYear | user
+	String filterBy;
+	
+	// individual record id
 	Long id;
 	
 	Long uId;
@@ -34,8 +53,6 @@ public class RequestObject {
 	
 	//Sorting direction desc | asc
 	String dir;
-	
-	String date;
 	
 	String refreshToken;
 
