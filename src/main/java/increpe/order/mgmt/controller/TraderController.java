@@ -3,6 +3,7 @@ package increpe.order.mgmt.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import increpe.order.mgmt.model.SalesPerson;
+import increpe.order.mgmt.repository.ActivityRepository;
 import increpe.order.mgmt.repository.WorkAreaMasterRepository;
 import increpe.order.mgmt.security.dto.AttendanceReportDto;
 import increpe.order.mgmt.security.dto.CompanyProductDto;
@@ -43,8 +45,10 @@ import increpe.order.mgmt.service.TraderService;
 import increpe.order.mgmt.service.WorkAreaMasterService;
 import increpe.order.mgmt.sp.dto.ActivityDto;
 import increpe.order.mgmt.sp.dto.ActivityMasterDto;
+import increpe.order.mgmt.sp.dto.ActivityReportsDTO;
 import increpe.order.mgmt.sp.dto.AttendanceDto;
 import increpe.order.mgmt.sp.dto.ExpensesDto;
+import increpe.order.mgmt.sp.dto.PageResultObject;
 import increpe.order.mgmt.sp.dto.TourDto;
 import increpe.order.mgmt.sp.dto.VisitsDto;
 
@@ -85,6 +89,9 @@ public class TraderController {
 
 	@Autowired
 	WorkAreaMasterService workMasterService;
+	
+	@Autowired
+	ActivityRepository activityRepository;
 
 	@PostMapping("/employee/add")
 	public ResponseEntity<RegistrationResponse> addNewSalesPersonAccont(@RequestBody SalesPersonDto request) {
@@ -147,18 +154,6 @@ public class TraderController {
 
 		return ResponseEntity.ok(traderService.importNewCustomerData(cutomerData));
 	}
-
-//	@PostMapping("/customer")
-//	public ResponseEntity<List<CustomerDto>> getAllCustomers(@RequestBody RequestObject reqObj) {
-//
-//		Pageable page = PageRequest.of(reqObj.getPageBegin(), reqObj.getPageLength());
-//
-////		if(reqObj.getSortBy() != null) {
-////			page = reqObj.getDir() == "asc" ? PageRequest.of(reqObj.getPageBegin(), reqObj.getPageLength(), ) 
-////		}
-//
-//		return ResponseEntity.ok(traderService.getAllCustomersByCompany(reqObj.getId(), page));
-//	}
 
 	@GetMapping("/customer")
 	public ResponseEntity<List<CustomerDto>> getAllCustomers(@RequestParam Long id) {
@@ -254,41 +249,6 @@ public class TraderController {
 		return ResponseEntity.ok(masterService.getWorkAreaMasterByCompany(id));
 	}
 
-	@PostMapping("/activity-master/add")
-	public ResponseEntity<RegistrationResponse> addNewActivityMasterList(@RequestBody ActivityMasterDto masterDto) {
-
-		return ResponseEntity.ok(activityService.createActivityMaster(masterDto));
-	}
-
-	@GetMapping("/activity-master")
-	public ResponseEntity<List<ActivityMasterDto>> getAllActivityMasters(@RequestParam Long id) {
-
-		return ResponseEntity.ok(activityService.getAllActivityMastersForCompany(id));
-	}
-
-	@PutMapping("/activity-master/update")
-	public ResponseEntity<RegistrationResponse> updateActivityMaster(@RequestBody ActivityMasterDto masterDto) {
-
-		return ResponseEntity.ok(activityService.updateActivityMaster(masterDto));
-	}
-
-	@GetMapping("/reports/expense")
-	public ResponseEntity<List<ExpenseReportDto>> getExpenseReportSummaryForCompany(@RequestParam Long id) {
-		return ResponseEntity.ok(traderService.getExpenseReportByCompanyId(id));
-	}
-
-	@GetMapping("/reports/expense/detail")
-	public ResponseEntity<List<ExpensesDto>> getExpenseBetween(@RequestParam String mY, @RequestParam Long id) {
-
-		return ResponseEntity.ok(expenseService.getExpensesForMonth(mY,id));
-	}
-	
-//	@PostMapping("/reports/expense/detail")
-//	public ResponseEntity<List<ExpensesDto>> getExpenseBetween(@RequestBody RequestObject req) {
-//
-//		return ResponseEntity.ok(expenseService.getExpensesForMonth(req.getMY(), req.getId()));
-//	}
-
 	@GetMapping("/reports/attendance")
 	public ResponseEntity<List<AttendanceReportDto>> getAttendanceReportSummaryForCompany(
 			@RequestParam(name = "mY") String monthYear, @RequestParam Long id) {
@@ -308,20 +268,6 @@ public class TraderController {
 		return ResponseEntity.ok(attendanceService.getAttendanceByMonth(monthYear, id));
 	}
 
-	@PostMapping("/reports/activity")
-	public ResponseEntity<List<ActivityDto>> getActivityReportsForCompany(@RequestBody RequestObject req) {
-		return ResponseEntity.ok(traderService.getActivityReports(req.getId()));
-	}
-
-	@GetMapping("/reports/visits")
-	public ResponseEntity<List<VisitsDto>> getVisitReportsForCompany(@RequestParam Long id) {
-		return ResponseEntity.ok(traderService.getVisitReports(id));
-	}
-
-	@GetMapping("/reports/tour")
-	public ResponseEntity<List<TourDto>> getTourReportsForCompany(@RequestParam Long id) {
-		return ResponseEntity.ok(traderService.getTourReports(id));
-	}
 
 	@PostMapping("/masters/holiday/add")
 	public ResponseEntity<HolidayMasterDto> addNewHolidayMaster(@RequestBody HolidayMasterDto masterDto) {

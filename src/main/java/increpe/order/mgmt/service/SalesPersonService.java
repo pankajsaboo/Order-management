@@ -13,6 +13,8 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import increpe.order.mgmt.model.Company;
@@ -275,6 +277,13 @@ public class SalesPersonService {
 
 	public void deleteSalesPerSonWorkAreaMappings(SalesPerson salesPerson) {
 		relationRepository.deleteBySalesPersonId(salesPerson);
+	}
+	
+	public List<Object[]> getSalesPersonIdList(Long companyId) {
+		
+		Page recordList = salesPersonRepository.findSalesPersonIdListByCompanyId(companyId, PageRequest.of(0, 10000));
+		
+		return recordList.getContent();
 	}
 
 }

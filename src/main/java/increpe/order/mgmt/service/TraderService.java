@@ -263,23 +263,6 @@ public class TraderService {
 		return salesPersonDtoList;
 	}
 	
-//	public List<SalesPersonDto> getAllSalesPersonByCompanyId(Long id, Pageable pageable) {
-//
-//		List<Long> userIdList = getAllUserIdByCompanyId(id, pageable);
-//
-//		List<SalesPersonDto> salesPersonDtoList = salesPersonService.getAllByCompany(userIdList);
-//
-//		for (Iterator<SalesPersonDto> iterator = salesPersonDtoList.iterator(); iterator.hasNext();) {
-//
-//			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
-//			salesPersonService.getIfExists(salesPersonDto);
-//		}
-//
-//		return salesPersonDtoList;
-//	}
-	
-	
-
 	public List<Long> getAllUserIdByCompanyId(Long id) {
 
 		List<CompanyUserRelationDto> relationList = relationService.getRelationByCompany(id);
@@ -297,22 +280,6 @@ public class TraderService {
 
 	}
 	
-//	public List<Long> getAllUserIdByCompanyId(Long id, Pageable pageable) {
-//
-//		List<CompanyUserRelationDto> relationList = relationService.getRelationByCompany(id, pageable);
-//
-//		List<Long> userIdList = new ArrayList<>();
-//
-//		for (Iterator<CompanyUserRelationDto> iterator = relationList.iterator(); iterator.hasNext();) {
-//
-//			CompanyUserRelationDto companyUserRelationDto = (CompanyUserRelationDto) iterator.next();
-//
-//			userIdList.add(companyUserRelationDto.getUserId().getId());
-//		}
-//
-//		return userIdList;
-//
-//	}
 	
 	public CustomerDto getSingleCustomer(Long customerId, Long traderId) {
 		
@@ -357,30 +324,6 @@ public class TraderService {
 
 		return customerCompanyList;
 	}
-	
-	public List<ExpenseReportDto> getExpenseReportByCompanyId(Long companyId) {
-
-		List<ExpenseReportDto> reportList = new ArrayList<>();
-
-		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
-
-		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
-
-			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
-
-			List<ExpensesSummary> summaryList = expenseService.getExpenseSummary(salesPersonDto.getId());
-
-			if (summaryList.size() > 0) {
-
-				summaryList.forEach((element) -> {
-					reportList.add(
-							new ExpenseReportDto(salesPersonDto, element.getMonthYear(), element.getMonthlySummary()));
-				});
-			}
-		}
-
-		return reportList;
-	}
 
 	public List<AttendanceReportDto> getAttendanceReportForCompanyByMonthYear(Long companyId, String monthYear) {
 
@@ -423,68 +366,6 @@ public class TraderService {
 		return dailyAttendanceList;
 	}
 
-	public List<ActivityDto> getActivityReports(Long companyId) {
-
-		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
-
-		List<ActivityDto> activityReportList = new ArrayList<>();
-
-		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
-
-			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
-
-			List<ActivityDto> dtoList = activityService.getAllActivitiesForSalesPerson(salesPersonDto.getId());
-
-			if (dtoList.size() > 0) {
-				activityReportList.addAll(dtoList);
-			}
-		}
-
-		return activityReportList;
-
-	}
-
-	public List<VisitsDto> getVisitReports(Long companyId) {
-
-		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
-
-		List<VisitsDto> visitReportList = new ArrayList<>();
-
-		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
-
-			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
-
-			List<VisitsDto> dtoList = visitService.getAllVisitsForSalesPerson(salesPersonDto.getId());
-
-			if (dtoList.size() > 0) {
-				visitReportList.addAll(dtoList);
-			}
-		}
-
-		return visitReportList;
-
-	}
-
-	public List<TourDto> getTourReports(Long companyId) {
-
-		List<SalesPersonDto> salesPersonList = getAllSalesPersonByCompanyId(companyId);
-
-		List<TourDto> tourReportList = new ArrayList<>();
-
-		for (Iterator<SalesPersonDto> iterator = salesPersonList.iterator(); iterator.hasNext();) {
-
-			SalesPersonDto salesPersonDto = (SalesPersonDto) iterator.next();
-
-			List<TourDto> dtoList = tourService.getTourListBySalesPersonId(salesPersonDto.getId());
-
-			if (dtoList.size() > 0) {
-				tourReportList.addAll(dtoList);
-			}
-		}
-
-		return tourReportList;
-
-	}
 
 	private void getIfExist(CustomerDto customerDto) {
 
