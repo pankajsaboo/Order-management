@@ -94,7 +94,8 @@ public class CustomerService {
 	public List<CustomerSalesPersonRelationDto> getAllBySalesPerson(Long salesPersonId) {
 
 		return CompanyMapper.INSTANCE
-				.convertToCustomerSalesPersonRelationDtoList(relationRepository.findBySalesPersonId_id(salesPersonId));
+				.convertToCustomerSalesPersonRelationDtoList(
+						relationRepository.findBySalesPersonId_idAndStatus(salesPersonId, "ACTIVE"));
 	}
 
 	public List<CustomerSalesPersonRelationDto> getAllByCustomerCompany(Long customerCompanyId) {

@@ -42,15 +42,6 @@ import increpe.order.mgmt.sp.dto.VisitsDto;
 public class EmployeeController {
 
 	@Autowired
-	VisitsService visitsService;
-
-	@Autowired
-	TourService tourService;
-
-	@Autowired
-	ExpensesService expensesService;
-
-	@Autowired
 	AttendanceService attendanceService;
 
 	@Autowired
@@ -62,9 +53,6 @@ public class EmployeeController {
 	@Autowired
 	CompanyProductRelationService companyProductRelationService;
 
-	@Autowired
-	ActivityService activityService;
-
 	@PostMapping("")
 	public ResponseEntity<SalesPersonDto> getEmployeeProfile(@RequestBody RequestObject req) {
 
@@ -75,71 +63,6 @@ public class EmployeeController {
 	public ResponseEntity<RegistrationResponse> updateEmployeeProfile(@RequestBody SalesPersonDto salesPersonDto) {
 
 		return ResponseEntity.ok(salesPersonService.updateSalesPersonData(salesPersonDto, false));
-	}
-
-	@PostMapping("/visits/add")
-	public ResponseEntity<RegistrationResponse> createNewVisit(@RequestBody VisitsDto visitsDto) {
-
-		return ResponseEntity.ok(visitsService.createNewVisit(visitsDto));
-	}
-
-	@GetMapping("/visits/salesperson")
-	public ResponseEntity<List<VisitsDto>> getVisitsBySalesPersonId(@RequestParam(name = "uId") Long id) {
-
-		return ResponseEntity.ok(visitsService.getAllVisitsForSalesPerson(id));
-	}
-
-	@GetMapping("/visits/date")
-	public ResponseEntity<List<VisitsDto>> getVisitsByDate(@RequestParam(name = "uId") Long id,
-			@RequestParam(name = "date") String visitDate) {
-
-		return ResponseEntity.ok(visitsService.getVisitsByDateAndSalesPersonId(visitDate, id));
-	}
-
-	@PutMapping("/visit/update")
-	public ResponseEntity<RegistrationResponse> updateVisitRecord(@RequestBody VisitsDto visitsDto) {
-
-		return ResponseEntity.ok(visitsService.updateVisit(visitsDto));
-	}
-
-	@DeleteMapping("/visit/delete")
-	public ResponseEntity<Boolean> deleteVisitRecord(@RequestParam(name = "vId") Long id) {
-
-		return ResponseEntity.ok(visitsService.deleteVisit(id));
-	}
-
-	@PostMapping("/expense/add")
-	public ResponseEntity<RegistrationResponse> createNewExpense(@RequestBody ExpensesDto eDto) {
-
-		return ResponseEntity.ok(expensesService.createNewExpense(eDto));
-	}
-
-	@GetMapping("/expense/summary")
-	public ResponseEntity<List<ExpensesSummary>> getExpenseSummary(@RequestParam(name = "uId") Long salesPersonId) {
-
-		return ResponseEntity.ok(expensesService.getExpenseSummary(salesPersonId));
-	}
-
-	@PostMapping("/expense")
-	public ResponseEntity<List<ExpensesDto>> getExpenseBetween(@RequestBody String inputParam) {
-
-		// Temporary workaround...
-		String monthYear = inputParam.split("#")[0];
-		Long userId = Long.parseLong(inputParam.split("#")[1]);
-
-		return ResponseEntity.ok(expensesService.getExpensesForMonth(monthYear, userId));
-	}
-
-	@PutMapping("/expense/update")
-	public ResponseEntity<RegistrationResponse> updateExpenseRecord(@RequestBody ExpensesDto eDto) {
-
-		return ResponseEntity.ok(expensesService.updateExpense(eDto));
-	}
-
-	@DeleteMapping("/expense/delete")
-	public ResponseEntity<Boolean> deleteExpenseRecord(@RequestParam(name = "eId") Long id) {
-
-		return ResponseEntity.ok(expensesService.deleteExpense(id));
 	}
 
 	@PostMapping("/attendance/add")
@@ -173,59 +96,5 @@ public class EmployeeController {
 			@RequestParam(name = "cId") Long id) {
 
 		return ResponseEntity.ok(companyProductRelationService.getByCustomerId(id));
-	}
-
-	@PostMapping("/tour/add")
-	public ResponseEntity<RegistrationResponse> createNewTour(@RequestBody TourDto tourDto) {
-
-		return ResponseEntity.ok(tourService.createNewTour(tourDto));
-	}
-
-	@GetMapping("/tour/salesperson")
-	public ResponseEntity<List<TourDto>> getToursBySalesPersonId(@RequestParam(name = "uId") Long id) {
-
-		return ResponseEntity.ok(tourService.getTourListBySalesPersonId(id));
-	}
-
-	@PutMapping("/tour/update")
-	public ResponseEntity<RegistrationResponse> updateTour(@RequestBody TourDto eDto) {
-
-		return ResponseEntity.ok(tourService.updateTour(eDto));
-	}
-
-	@DeleteMapping("/tour/delete")
-	public ResponseEntity<Boolean> deleteTour(@RequestParam(name = "tId") Long id) {
-
-		return ResponseEntity.ok(tourService.deleteTour(id));
-	}
-
-	@PostMapping("/activity/add")
-	public ResponseEntity<RegistrationResponse> createNewActivity(@RequestBody ActivityDto activityDto) {
-
-		return ResponseEntity.ok(activityService.createNewActivity(activityDto));
-	}
-
-	@PostMapping("/activity/salesperson")
-	public ResponseEntity<List<ActivityDto>> getActivitiesBySalesPersonId(@RequestBody RequestObject req) {
-
-		return ResponseEntity.ok(activityService.getAllActivitiesForSalesPerson(req.getId()));
-	}
-
-	@PutMapping("/activity/update")
-	public ResponseEntity<RegistrationResponse> updateActivity(@RequestBody ActivityDto activityDto) {
-
-		return ResponseEntity.ok(activityService.updateActivity(activityDto));
-	}
-
-	@DeleteMapping("/activity/delete")
-	public ResponseEntity<Boolean> deleteActivity(@RequestParam(name = "aId") Long id) {
-
-		return ResponseEntity.ok(activityService.deleteActivity(id));
-	}
-
-	@GetMapping("/activity-master")
-	public ResponseEntity<List<ActivityMasterDto>> getAllActivityMasters(@RequestParam(name = "cId") Long id) {
-
-		return ResponseEntity.ok(activityService.getAllActivityMastersForCompany(id));
 	}
 }

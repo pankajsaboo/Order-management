@@ -13,7 +13,7 @@ public interface CustomerSalesPersonRelationRepository extends CrudRepository<Cu
 	
 	List<CustomerSalesPersonRelation> findByCustomerCompanyId_id(Long customerCompanyId);
 
-	List<CustomerSalesPersonRelation> findBySalesPersonId_id(Long salesPersonId);
+	List<CustomerSalesPersonRelation> findBySalesPersonId_idAndStatus(Long salesPersonId, String status);
 	
 	void deleteBySalesPersonId(SalesPerson salesPerson);
 	

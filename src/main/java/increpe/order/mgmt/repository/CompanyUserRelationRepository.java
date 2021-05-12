@@ -16,3 +16,5 @@ public interface CompanyUserRelationRepository extends CrudRepository<CompanyUse
 	CompanyUserRelation findByCompanyId_idAndUserId_UserTypeId_id(Long companyId, Long userTypeId);
 
 }
+
+//CrudRepository<CompanyUserRelation, Long>
