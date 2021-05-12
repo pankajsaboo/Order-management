@@ -5,7 +5,10 @@ import java.time.LocalTime;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import increpe.order.mgmt.security.dto.CompanyDto;
 import increpe.order.mgmt.security.dto.CustomerSalesPersonRelationDto;
+import increpe.order.mgmt.security.dto.SalesPersonDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +21,18 @@ public class VisitsDto {
 	
 	@JsonProperty(value = "_id")
 	Long id;
+
+//	@JsonProperty(value = "relationId")
+//	CustomerSalesPersonRelationDto customerSalesPersonRelationId;
 	
-	@JsonProperty(value = "relationId")
-	CustomerSalesPersonRelationDto customerSalesPersonRelationId;
+	@JsonProperty(value = "customerId")
+	CompanyDto customerId;
+	
+	@JsonProperty(value = "salesPersonId")
+	SalesPersonDto salesPersonId;
+	
+	@JsonProperty(value = "dealer")
+	String dealer;
 	
 	@JsonProperty(value = "address")
 	String address;

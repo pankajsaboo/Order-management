@@ -28,9 +28,20 @@ public class Visits {
 	@SequenceGenerator(name = "VISITS_SEQ", sequenceName = "visits_seq")
 	Long id;
 	
+//	@OneToOne
+//	@JoinColumn(name = "customer_sales_person_relation_id")
+//	CustomerSalesPersonRelation customerSalesPersonRelationId;
+	
 	@OneToOne
-	@JoinColumn(name = "customer_sales_person_relation_id")
-	CustomerSalesPersonRelation customerSalesPersonRelationId;
+	@JoinColumn(name = "sales_person_id")
+	SalesPerson salesPersonId;
+	
+	@OneToOne
+	@JoinColumn(name = "company_id")
+	Company customerId;
+	
+	@Column(name = "dealer")
+	String dealer;
 	
 	@Column(name = "address", columnDefinition = "TEXT")
 	String address;
