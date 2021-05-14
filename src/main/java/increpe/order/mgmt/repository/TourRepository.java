@@ -40,13 +40,13 @@ public interface TourRepository extends CrudRepository<Tour, Long> {
 	String MONTH_COUNT = COUNT_STRING + " and to_char(tou.start_date, 'MONTH YYYY') like ?2";
 	
 	@Query(value = USER_QUERY, nativeQuery = true, countQuery = USER_COUNT)
-	Page<Record> findTourReportByUser(Long companyId, Long spId, Pageable page);
+	Page<Object[]> findTourReportByUser(Long companyId, Long spId, Pageable page);
 	
 	@Query(value = DATE_QUERY, nativeQuery = true, countQuery = DATE_COUNT)
-	Page<Record> findTourReportByDate(Long companyId, String date, Pageable page);
+	Page<Object[]> findTourReportByDate(Long companyId, String date, Pageable page);
 	
 	@Query(value = MONTH_QUERY, nativeQuery = true, countQuery = MONTH_COUNT)
-	Page<Record> findTourReportByMonthYear(Long companyId, String monthYear, Pageable page);
+	Page<Object[]> findTourReportByMonthYear(Long companyId, String monthYear, Pageable page);
 
 	List<Tour> findBySalesPersonId_id(Long salesPersonId);
 }

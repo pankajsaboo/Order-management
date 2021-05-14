@@ -18,5 +18,5 @@ public interface SalesPersonRepository extends CrudRepository<SalesPerson, Long>
 	 		+ "join company_user_relation cur on cur.user_id = u.id \r\n"
 	 		+ "join company c on c.id = cur.company_id \r\n"
 	 		+ "where c.id = ?1", nativeQuery = true)
-	 Page<Record> findSalesPersonIdListByCompanyId(Long companyId, Pageable page);
+	 Page<Object[]> findSalesPersonIdListByCompanyId(Long companyId, Pageable page);
 }

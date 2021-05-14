@@ -66,14 +66,14 @@ public interface ActivityRepository extends CrudRepository<Activity, Long> {
 							+ "join company_user_relation cur on cur.user_id = u.id\r\n"
 							+ "join company c on c.id = cur.company_id\r\n"
 							+ "where c.id = ?1")
-	Page<Record> findActivityReport(Long companyId, Pageable page);
+	Page<Object[]> findActivityReport(Long companyId, Pageable page);
 	
 	@Query(value = USER_QUERY, nativeQuery = true, countQuery = USER_COUNT)
-	Page<Record> findActivityReportByUser(Long companyId, Long spId, Pageable page);
+	Page<Object[]> findActivityReportByUser(Long companyId, Long spId, Pageable page);
 	
 	@Query(value = DATE_QUERY, nativeQuery = true, countQuery = DATE_COUNT)
-	Page<Record> findActivityReportByDate(Long companyId, String date, Pageable page);
+	Page<Object[]> findActivityReportByDate(Long companyId, String date, Pageable page);
 	
 	@Query(value = MONTH_QUERY, nativeQuery = true, countQuery = MONTH_COUNT)
-	Page<Record> findActivityReportByMonthYear(Long companyId, String monthYear, Pageable page);
+	Page<Object[]> findActivityReportByMonthYear(Long companyId, String monthYear, Pageable page);
 }

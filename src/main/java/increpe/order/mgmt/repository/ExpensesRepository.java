@@ -52,16 +52,16 @@ public interface ExpensesRepository extends CrudRepository<Expenses, Long> {
 	String MONTH_COUNT = COUNT_STRING + " and to_char(e.expense_date, 'MONTH YYYY') like ?2";
 	
 	@Query(value = USER_QUERY, nativeQuery = true, countQuery = USER_COUNT)
-	Page<Record> findExpenseReportByUser(Long companyId, Long spId, Pageable page);
+	Page<Object[]> findExpenseReportByUser(Long companyId, Long spId, Pageable page);
 	
 	@Query(value = DATE_QUERY, nativeQuery = true, countQuery = DATE_COUNT)
-	Page<Record> findExpenseReportByDate(Long companyId, String date, Pageable page);
+	Page<Object[]> findExpenseReportByDate(Long companyId, String date, Pageable page);
 	
 	@Query(value = USER_AND_MONTH_QUERY, nativeQuery = true, countQuery = USER_AND_MONTH_COUNT)
-	Page<Record> findExpenseReportByUserAndMonthYear(Long companyId, Long spId, String monthYear, Pageable page);
+	Page<Object[]> findExpenseReportByUserAndMonthYear(Long companyId, Long spId, String monthYear, Pageable page);
 	
 	@Query(value = MONTH_QUERY, nativeQuery = true, countQuery = MONTH_COUNT)
-	Page<Record> findExpenseReportByMonthYear(Long companyId, String monthYear, Pageable page);
+	Page<Object[]> findExpenseReportByMonthYear(Long companyId, String monthYear, Pageable page);
 		
 	@Query("SELECT TO_CHAR(e.expenseDate, 'MONTH-YYYY') as monthYear, SUM(e.expenseAmount) as monthlySummary,"
 			+" e.salesPersonId.employeeId as employeeId, e.salesPersonId.userId.name as fullName,"

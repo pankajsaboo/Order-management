@@ -52,15 +52,15 @@ public interface VisitsRepository extends CrudRepository<Visits, Long> {
 	String MONTH_COUNT = COUNT_STRING + " and to_char(vi.\"date\", 'MONTH YYYY') like ?2";
 	
 	@Query(value = USER_QUERY, nativeQuery = true, countQuery = USER_COUNT)
-	Page<Record> findVisitsReportByUser(Long companyId, Long spId, Pageable page);
+	Page<Object[]> findVisitsReportByUser(Long companyId, Long spId, Pageable page);
 	
 	@Query(value = DATE_QUERY, nativeQuery = true, countQuery = DATE_COUNT)
-	Page<Record> findVisitsReportByDate(Long companyId, String date, Pageable page);
+	Page<Object[]> findVisitsReportByDate(Long companyId, String date, Pageable page);
 	
 	@Query(value = USER_AND_DATE_QUERY, nativeQuery = true, countQuery = USER_AND_DATE_COUNT)
-	Page<Record> findVisitsReportByUserAndDate(Long companyId, Long spId, String date, Pageable page);
+	Page<Object[]> findVisitsReportByUserAndDate(Long companyId, Long spId, String date, Pageable page);
 	
 	@Query(value = MONTH_QUERY, nativeQuery = true, countQuery = MONTH_COUNT)
-	Page<Record> findVisitsReportByMonthYear(Long companyId, String monthYear, Pageable page);
+	Page<Object[]> findVisitsReportByMonthYear(Long companyId, String monthYear, Pageable page);
 
 }
